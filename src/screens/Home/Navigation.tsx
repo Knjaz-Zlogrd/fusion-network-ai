@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../store';
 import { Center, VStack, Image, List, ListItem, Link, HStack, Text, Menu, MenuButton, MenuList, MenuItem, } from '@chakra-ui/react';
@@ -31,30 +31,30 @@ const Navigation = () => {
             <ListItem onClick={handleResetRoutes}>
               <Link 
                 as={RouterLink}
-                to={"users"}>
-                  <HStack h="12" pl="8" bg={useRouteMatchValue({path: "/home/users"}, ['app.blue', 'transparent'])}>
+                to={"create"}>
+                  <HStack h="12" pl="8" bg={useRouteMatchValue({path: "/home/create"}, ['app.blue', 'transparent'])}>
                     {/* <NavIcon h="5" w="5" mr="2"/> */}
-                    <Text color="white" fontWeight="semibold" fontSize="18" fontFamily="heading">Users</Text>
+                    <Text color="black" fontWeight="semibold" fontSize="18" fontFamily="heading">Create</Text>
                   </HStack>
               </Link>
             </ListItem>
             <ListItem onClick={handleResetRoutes}>
               <Link
                 as={RouterLink}
-                to={"hangouts"}>
-                  <HStack h="12" pl="8" bg={useRouteMatchValue({path: "/home/hangouts"}, ['app.blue', 'transparent'])}>
+                to={"pending"}>
+                  <HStack h="12" pl="8" bg={useRouteMatchValue({path: "/home/pending"}, ['app.blue', 'transparent'])}>
                     {/* <NavIcon h="5" w="5" mr="2" /> */}
-                    <Text color="white" fontWeight="semibold" fontSize="18" fontFamily="heading">Hangouts</Text>
+                    <Text color="black" fontWeight="semibold" fontSize="18" fontFamily="heading">Pending</Text>
                   </HStack>
               </Link> 
             </ListItem>
             <ListItem onClick={handleResetRoutes}>
               <Link 
                 as={RouterLink}
-                to={"reports"}>
-                  <HStack h="12" pl="8" bg={useRouteMatchValue({path: "/home/reports"}, ['app.blue', 'transparent'])}>
+                to={"categories"}>
+                  <HStack h="12" pl="8" bg={useRouteMatchValue({path: "/home/categories"}, ['app.blue', 'transparent'])}>
                     {/* <NavIcon h="5" w="5" mr="2" /> */}
-                    <Text color="white" fontWeight="semibold" fontSize="18" fontFamily="heading">Reports</Text>
+                    <Text color="black" fontWeight="semibold" fontSize="18" fontFamily="heading">Categories</Text>
                   </HStack>
               </Link>
             </ListItem>
@@ -69,8 +69,8 @@ const Navigation = () => {
               _active={{color: 'none'}}
             >
               <HStack h="12" pl="8">
-                {/* <SettingsIcon h="5" w="5" mr="2" /> */}
-                <Text color="white" fontWeight="semibold" fontSize="18" fontFamily="heading">Settings</Text>
+                {/* <LogoutIcon h="5" w="5" mr="2" /> */}
+                <Text color="black" fontWeight="semibold" fontSize="18" fontFamily="heading">Logout</Text>
               </HStack>
             </MenuButton>
             <MenuList minW="180px" ml="4">

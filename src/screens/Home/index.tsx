@@ -1,6 +1,10 @@
 import React from 'react';
 import { Flex, HStack } from '@chakra-ui/react';
 import Navigation from './Navigation';
+import { Route, Routes } from 'react-router-dom';
+import Create from '../Create';
+import Pending from '../Pending';
+import Categories from '../Categories';
 
 const Home = () => {
   return (
@@ -16,11 +20,11 @@ const Home = () => {
         <Navigation />
       </Flex>
       <Flex as="main" flex="1">
-        {/* <Routes>
-          <Route path="users" element={<Users />}/>
-          <Route path="hangouts" element={<Hangouts />}/>
-          <Route path="reports" element={<Reports />}/>
-        </Routes> */}
+        <Routes>
+          <Route path="create" element={<Create />}/>
+          <Route path="pending" element={<Pending />}/>
+          <Route path="categories" element={<Categories />}/>
+        </Routes>
       </Flex>
     </HStack>
   );
