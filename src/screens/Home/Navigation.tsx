@@ -40,7 +40,6 @@ const Navigation = () => {
                 as={RouterLink}
                 to={"create"}>
                   <HStack h="12" pl="8" bg={useRouteMatchValue({path: "/home/create"}, ['app.blue', 'transparent'])}>
-                    {/* <NavIcon h="5" w="5" mr="2"/> */}
                     <Box h="5" w="5" mb="2px">
                       <FontAwesomeIcon icon={faGamepad} color='gray' />
                     </Box>
@@ -53,7 +52,6 @@ const Navigation = () => {
                 as={RouterLink}
                 to={"pending"}>
                   <HStack h="12" pl="8" bg={useRouteMatchValue({path: "/home/pending"}, ['app.blue', 'transparent'])}>
-                    {/* <NavIcon h="5" w="5" mr="2" /> */}
                     <Box h="5" w="5" mb="4px">
                       <FontAwesomeIcon icon={faCalendar} color='gray' />
                     </Box>
@@ -66,7 +64,6 @@ const Navigation = () => {
                 as={RouterLink}
                 to={"categories"}>
                   <HStack h="12" pl="8" bg={useRouteMatchValue({path: "/home/categories"}, ['app.blue', 'transparent'])}>
-                    {/* <NavIcon h="5" w="5" mr="2" /> */}
                     <Box h="5" w="5" mb="2px">
                       <FontAwesomeIcon icon={faPieChart} color='gray' />
                     </Box>

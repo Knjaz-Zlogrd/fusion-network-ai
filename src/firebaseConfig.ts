@@ -1,6 +1,7 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import {getDatabase, ref, set} from 'firebase/database';
 
 const app = firebase.initializeApp({
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -13,3 +14,28 @@ const app = firebase.initializeApp({
 
 export const auth = app.auth();
 export default app;
+
+function writeUserData(
+  userId: string, 
+  firebaseId: string,
+  email: string, 
+  name: string, 
+  country: string, 
+  city: string, 
+  address: string, 
+  description: string, 
+  phoneNumber: string) {
+  const db = getDatabase();
+  const reference = ref(db, 'users/' + userId)
+
+  set(reference, {
+    firebaseId: firebaseId,
+    email: email,
+    name: name,
+    country: country,
+    city: city,
+    address: address,
+    description: description,
+    phoneNumber: phoneNumber,
+  })
+}
