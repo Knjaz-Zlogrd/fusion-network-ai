@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../store';
-import { Center, VStack, Image, List, ListItem, Link, HStack, Text, Menu, MenuButton, MenuList, MenuItem, } from '@chakra-ui/react';
+import { Center, VStack, Image, List, ListItem, Link, HStack, Text, Menu, MenuButton, MenuList, MenuItem, Icon, Box, } from '@chakra-ui/react';
 import useRouteMatchValue from '../../hooks/useRouteMatchValue';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebaseConfig';
 import { removeAuthToken } from '../../store/loginSlice';
+import { faGamepad, faCalendar, faPieChart, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -39,6 +41,9 @@ const Navigation = () => {
                 to={"create"}>
                   <HStack h="12" pl="8" bg={useRouteMatchValue({path: "/home/create"}, ['app.blue', 'transparent'])}>
                     {/* <NavIcon h="5" w="5" mr="2"/> */}
+                    <Box h="5" w="5" mb="2px">
+                      <FontAwesomeIcon icon={faGamepad} color='gray' />
+                    </Box>
                     <Text color="white" fontWeight="semibold" fontSize="18" fontFamily="heading">Create</Text>
                   </HStack>
               </Link>
@@ -49,6 +54,9 @@ const Navigation = () => {
                 to={"pending"}>
                   <HStack h="12" pl="8" bg={useRouteMatchValue({path: "/home/pending"}, ['app.blue', 'transparent'])}>
                     {/* <NavIcon h="5" w="5" mr="2" /> */}
+                    <Box h="5" w="5" mb="4px">
+                      <FontAwesomeIcon icon={faCalendar} color='gray' />
+                    </Box>
                     <Text color="white" fontWeight="semibold" fontSize="18" fontFamily="heading">Pending</Text>
                   </HStack>
               </Link> 
@@ -59,6 +67,9 @@ const Navigation = () => {
                 to={"categories"}>
                   <HStack h="12" pl="8" bg={useRouteMatchValue({path: "/home/categories"}, ['app.blue', 'transparent'])}>
                     {/* <NavIcon h="5" w="5" mr="2" /> */}
+                    <Box h="5" w="5" mb="2px">
+                      <FontAwesomeIcon icon={faPieChart} color='gray' />
+                    </Box>
                     <Text color="white" fontWeight="semibold" fontSize="18" fontFamily="heading">Categories</Text>
                   </HStack>
               </Link>
@@ -66,8 +77,10 @@ const Navigation = () => {
           </List>
         </VStack>
         <HStack w="full">
-          <HStack h="12" pl="8">
-            {/* <LogoutIcon h="5" w="5" mr="2" /> */}
+          <HStack h="12" pl="8" _hover={{cursor: 'pointer'}}>
+            <Box h="5" w="5" mb="4px">
+              <FontAwesomeIcon icon={faFolderOpen} color='gray' />
+            </Box>
             <Text color="white" fontWeight="semibold" fontSize="18" fontFamily="heading" onClick={handleLogout}>Logout</Text>
            </HStack>
         </HStack>
