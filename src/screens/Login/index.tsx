@@ -41,22 +41,19 @@ const Login = () => {
     <Stack 
       h="100vh" 
       bgRepeat="no-repeat" 
-      bgPosition="center" 
-      // bgSize="cover"
-      // bgImage={`url(${background})`}
+      bgPosition="center"
     >
     <Center>
-      <Image h="56px" w="269px" position="absolute" top="20%" />
-      <VStack w="400px" h="327px" background="white" position="absolute" top="30%">
+      <VStack w="400px" h="327px" background="white" position="absolute" top="30%" borderWidth="1px" borderColor="black" >
         <Flex align="center" h="100px">
           <Text fontSize="26" fontWeight="semibold" mt="12px" color="black">Sign in</Text>
         </Flex>
         <Stack as="form" w="70%" spacing="2.5" >
           <Input 
-            textColor="white" 
+            textColor="black" 
             placeholder="Enter email"
-            _placeholder={{color: "white"}}
-            bgColor="grey"
+            _placeholder={{color: "black"}}
+            bgColor="gray.200"
             value={loginEmail}
             onChange={(event) => setLoginEmail(event.target.value)}
           />
@@ -69,10 +66,10 @@ const Login = () => {
           <Input 
             type="password" 
             name="password" 
-            textColor="white"
+            textColor="black"
             placeholder="Enter password"
-            _placeholder={{color: 'white'}} 
-            bgColor="grey"
+            _placeholder={{color: 'black'}} 
+            bgColor="gray.200"
             value={loginPassword}
             onChange={(event) => setLoginPassword(event.target.value)}
           />
@@ -83,7 +80,8 @@ const Login = () => {
               Incorrect username or password
           </Text>
           <Button 
-            bgColor="blue"
+            bgColor="blue.600"
+            _hover={{bgColor: 'app.primary'}}
             color="white" 
             onClick={handleLogin}
           >
