@@ -27,7 +27,7 @@ interface Category {
   title: string;
 }
 
-const Categories= () => {
+const Categories = () => {
   const [availableCategories, setAvailableCategories] =
     useState<Category[]>(INIT_CATEGORIES);
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
@@ -47,7 +47,7 @@ const Categories= () => {
   };
 
   return (
-    <VStack>
+    <VStack w="full">
       <Heading as="h2" size="lg" marginBottom="4">
         Select Categories
       </Heading>
@@ -55,15 +55,22 @@ const Categories= () => {
         <Box
           borderWidth="1px"
           borderRadius="lg"
-          borderColor="black"
+          borderColor="gray.150"
           p="4"
           h="700px"
           w="200px"
+          bg="app.accent"
         >
           <VStack>
             {availableCategories.map((value) => {
               return (
-                <Tag size="lg" onClick={() => handleAddCategory(value)}>
+                <Tag
+                  _hover={{ cursor: "pointer" }}
+                  size="lg"
+                  bg="app.primary"
+                  color="white"
+                  onClick={() => handleAddCategory(value)}
+                >
                   {value.title}
                 </Tag>
               );
@@ -74,15 +81,22 @@ const Categories= () => {
         <Box
           borderWidth="1px"
           borderRadius="lg"
-          borderColor="black"
+          borderColor="gray.150"
           p="4"
           h="700px"
           w="200px"
+          bg="app.accent"
         >
           <VStack>
             {selectedCategories.map((value) => {
               return (
-                <Tag size="lg" onClick={() => handleRemoveCategory(value)}>
+                <Tag
+                  bg="app.primary"
+                  color="white"
+                  _hover={{ cursor: "pointer" }}
+                  size="lg"
+                  onClick={() => handleRemoveCategory(value)}
+                >
                   {value.title}
                 </Tag>
               );

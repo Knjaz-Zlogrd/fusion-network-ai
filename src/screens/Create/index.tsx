@@ -43,18 +43,12 @@ const Create = () => {
   };
 
   return (
-    <VStack border="1px"
-    borderColor="gray.600"
-    bg="blue.100"
-    borderRadius="16">
+    <VStack>
       <Heading as="h2" size="lg" marginBottom="4">
         Create Event
       </Heading>
-      <form
-        onSubmit={handleSubmit}
-        
-      >
-        <Center>
+      <form onSubmit={handleSubmit}>
+        <Center bg="app.accent">
           <Grid
             templateColumns="repeat(3, 1fr)"
             gap={6}
@@ -63,7 +57,6 @@ const Create = () => {
             top="30%"
             p="4"
           >
-            {/* First Column */}
             <GridItem>
               <FormControl isRequired>
                 <FormLabel>Category</FormLabel>
@@ -107,7 +100,6 @@ const Create = () => {
                   <RangeSlider
                     aria-label={["min", "max"]}
                     defaultValue={sliderMinMax}
-                    // value={[30, 45]}
                     onChangeEnd={(val) => {
                       setSliderMinMax(val);
                     }}

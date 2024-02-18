@@ -38,15 +38,15 @@ const PendingEvent = ({ data }: Props) => {
   return (
     <Card
       variant={isHovered ? "filled" : "outline"}
-      minWidth="300px"
+      minWidth="33%"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <CardHeader>
-        <Heading size="md"> {data.category}</Heading>
+      <CardHeader bg="app.primary">
+        <Heading size="md" color="white"> {data.category}</Heading>
       </CardHeader>
         <Divider />
-      <CardBody>
+      <CardBody  bg="app.accent">
         {Object.entries(data).map(([key, value]) => (
           <HStack key={key}>
             <Text fontWeight="bold">{capitalize(key)}: </Text>
@@ -54,11 +54,11 @@ const PendingEvent = ({ data }: Props) => {
           </HStack>
         ))}
       </CardBody>
-      <CardFooter>
+      <CardFooter  bg="app.accent">
         <Button colorScheme="blue" variant="solid" marginRight="4">
           View
         </Button>
-        <Button colorScheme="gray" variant="outline">
+        <Button colorScheme="gray" variant="solid">
           Cancel
         </Button>
       </CardFooter>

@@ -35,7 +35,25 @@ const PENDING_EVENTS = [
 
 const Pending = () => {
   return (
-    <VStack>
+    <VStack
+      w="full"
+      sx={{
+        overflowY: "auto",
+        "&::-webkit-scrollbar": {
+          width: "8px",
+        },
+        scrollbarWidth: "thin",
+        "&::-webkit-scrollbar-thumb": {
+          borderRadius: "24px",
+        },
+        _hover: {
+          "&::-webkit-scrollbar-thumb": {
+            background: "grey",
+          },
+        },
+      }}
+
+    >
       <Heading as="h2" size="lg" marginBottom="4">
         Pending Events
       </Heading>
@@ -46,6 +64,5 @@ const Pending = () => {
     </VStack>
   );
 };
-
 
 export default Pending;
