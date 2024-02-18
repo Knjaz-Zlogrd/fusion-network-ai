@@ -6,6 +6,7 @@ import {getDatabase, ref, set} from 'firebase/database';
 const app = firebase.initializeApp({
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_APP_DOMAIN,
+  databaseURL: process.env.REACT_APP_DATABASE_URL,
   projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
   storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
@@ -15,7 +16,7 @@ const app = firebase.initializeApp({
 export const auth = app.auth();
 export default app;
 
-function writeUserData(
+export function writeUserData(
   userId: string, 
   firebaseId: string,
   email: string, 

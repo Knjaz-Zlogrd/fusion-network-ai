@@ -3,7 +3,7 @@ import { Center, Flex, Stack, VStack, Text, Input, Button, Image, } from '@chakr
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../store';
 import { signInWithEmailAndPassword, } from 'firebase/auth';
-import { auth } from '../../firebaseConfig';
+import { auth, writeUserData } from '../../firebaseConfig';
 import { addAuthToken } from '../../store/loginSlice';
 
 const Login = () => {
