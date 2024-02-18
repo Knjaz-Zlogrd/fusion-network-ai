@@ -3,13 +3,18 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../store';
 import { Center, VStack, Image, List, ListItem, Link, HStack, Text, Menu, MenuButton, MenuList, MenuItem, } from '@chakra-ui/react';
 import useRouteMatchValue from '../../hooks/useRouteMatchValue';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebaseConfig';
+import { removeAuthToken } from '../../store/loginSlice';
 
 const Navigation = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const handleLogout = () => {
-    // logout logic
+  const handleLogout = async() => {
+    await signOut(auth);
+    dispatch(removeAuthToken());
+    navigate('/login');
   }
 
   const handleResetRoutes = () => {
@@ -19,7 +24,7 @@ const Navigation = () => {
   return (
     <VStack 
       justify="space-between"
-      backgroundColor="app.darkBlue">
+      backgroundColor="app.primary">
       <VStack spacing="0" justify='space-between' h='full' mb="10px">
         <VStack>
           <Center h="full" w="214px" mt="41px" mb="33px" as="h1">
@@ -34,7 +39,7 @@ const Navigation = () => {
                 to={"create"}>
                   <HStack h="12" pl="8" bg={useRouteMatchValue({path: "/home/create"}, ['app.blue', 'transparent'])}>
                     {/* <NavIcon h="5" w="5" mr="2"/> */}
-                    <Text color="black" fontWeight="semibold" fontSize="18" fontFamily="heading">Create</Text>
+                    <Text color="white" fontWeight="semibold" fontSize="18" fontFamily="heading">Create</Text>
                   </HStack>
               </Link>
             </ListItem>
@@ -44,7 +49,7 @@ const Navigation = () => {
                 to={"pending"}>
                   <HStack h="12" pl="8" bg={useRouteMatchValue({path: "/home/pending"}, ['app.blue', 'transparent'])}>
                     {/* <NavIcon h="5" w="5" mr="2" /> */}
-                    <Text color="black" fontWeight="semibold" fontSize="18" fontFamily="heading">Pending</Text>
+                    <Text color="white" fontWeight="semibold" fontSize="18" fontFamily="heading">Pending</Text>
                   </HStack>
               </Link> 
             </ListItem>
@@ -54,29 +59,17 @@ const Navigation = () => {
                 to={"categories"}>
                   <HStack h="12" pl="8" bg={useRouteMatchValue({path: "/home/categories"}, ['app.blue', 'transparent'])}>
                     {/* <NavIcon h="5" w="5" mr="2" /> */}
-                    <Text color="black" fontWeight="semibold" fontSize="18" fontFamily="heading">Categories</Text>
+                    <Text color="white" fontWeight="semibold" fontSize="18" fontFamily="heading">Categories</Text>
                   </HStack>
               </Link>
             </ListItem>
           </List>
         </VStack>
         <HStack w="full">
-          <Menu>
-            <MenuButton  
-              aria-label='Settings'
-              alignSelf='flex-end'
-              _hover={{color: 'none'}}
-              _active={{color: 'none'}}
-            >
-              <HStack h="12" pl="8">
-                {/* <LogoutIcon h="5" w="5" mr="2" /> */}
-                <Text color="black" fontWeight="semibold" fontSize="18" fontFamily="heading">Logout</Text>
-              </HStack>
-            </MenuButton>
-            <MenuList minW="180px" ml="4">
-              <MenuItem onClick={handleLogout}>Logout</MenuItem>
-            </MenuList>
-          </Menu>
+          <HStack h="12" pl="8">
+            {/* <LogoutIcon h="5" w="5" mr="2" /> */}
+            <Text color="white" fontWeight="semibold" fontSize="18" fontFamily="heading" onClick={handleLogout}>Logout</Text>
+           </HStack>
         </HStack>
       </VStack>
     </VStack>
