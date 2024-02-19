@@ -1,7 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-
+import { useAppDispatch, RootState } from "../../store";
+import { addCategory, removeCategory } from "../../store/categoriesSlice";
+import { useSelector } from "react-redux";
 import { Heading, HStack, VStack, Box, Tag } from "@chakra-ui/react";
 
 const INIT_CATEGORIES = [
@@ -28,22 +30,28 @@ interface Category {
 }
 
 const Categories = () => {
-  const [availableCategories, setAvailableCategories] =
-    useState<Category[]>(INIT_CATEGORIES);
-  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+  const selectedCategories = useSelector(
+    (state: RootState) => state.categoriesSlice.categories
+  );
+
+  const [availableCategories, setAvailableCategories] = useState<Category[]>(
+    INIT_CATEGORIES.filter(
+      (category) => !selectedCategories.find((item) => item.id == category.id)
+    )
+  );
+
+  const dispatch = useAppDispatch();
 
   const handleAddCategory = (category: Category) => {
-    setSelectedCategories((prevCategories) => [...prevCategories, category]);
+    dispatch(addCategory(category));
     setAvailableCategories((prevCategories) =>
       prevCategories.filter((cat) => cat.id !== category.id)
     );
   };
 
   const handleRemoveCategory = (category: Category) => {
+    dispatch(removeCategory(category.id));
     setAvailableCategories((prevCategories) => [...prevCategories, category]);
-    setSelectedCategories((prevCategories) =>
-      prevCategories.filter((cat) => cat.id !== category.id)
-    );
   };
 
   return (
@@ -62,11 +70,12 @@ const Categories = () => {
           bg="app.accent"
         >
           <VStack>
-            {availableCategories.map((value) => {
+            {availableCategories.map((value, index) => {
               return (
                 <Tag
                   _hover={{ cursor: "pointer" }}
                   size="lg"
+                  key={index}
                   bg="app.primary"
                   color="white"
                   onClick={() => handleAddCategory(value)}
@@ -88,11 +97,12 @@ const Categories = () => {
           bg="app.accent"
         >
           <VStack>
-            {selectedCategories.map((value) => {
+            {selectedCategories.map((value, index) => {
               return (
                 <Tag
                   bg="app.primary"
                   color="white"
+                  key={index}
                   _hover={{ cursor: "pointer" }}
                   size="lg"
                   onClick={() => handleRemoveCategory(value)}

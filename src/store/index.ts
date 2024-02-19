@@ -1,16 +1,25 @@
-import { AnyAction, combineReducers, configureStore, createAction, Reducer } from "@reduxjs/toolkit";
+import {
+  AnyAction,
+  combineReducers,
+  configureStore,
+  createAction,
+  Reducer,
+} from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { loginSlice } from "./loginSlice";
-import localStorage from 'redux-persist/lib/storage';
-import { FLUSH, 
-  PAUSE, 
-  PERSIST, 
-  persistReducer, 
-  persistStore, 
-  PURGE, 
-  REGISTER, 
-  REHYDRATE 
-} from 'redux-persist';
+import { categoriesSlice } from "./categoriesSlice";
+import { eventsSlice } from "./eventsSlice";
+import localStorage from "redux-persist/lib/storage";
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from "redux-persist";
 
 const authPersistConfig = {
   key: loginSlice.name,
@@ -20,25 +29,27 @@ const authPersistConfig = {
 
 const rootReducer = combineReducers({
   [loginSlice.name]: persistReducer(authPersistConfig, loginSlice.reducer),
-//   [slice.name]: slice.reducer
-//   [slice.name]: slice.reducer
-//   [slice.name]: slice.reducer
+  [categoriesSlice.name]: categoriesSlice.reducer,
+  [eventsSlice.name]: eventsSlice.reducer,
+  //   [slice.name]: slice.reducer
+  //   [slice.name]: slice.reducer
+  //   [slice.name]: slice.reducer
 });
 
 const resettableRootReducer = (
   state: ReturnType<typeof rootReducer>,
-  action: AnyAction,
+  action: AnyAction
 ) => {
-  if (action.type === 'store/reset') {
+  if (action.type === "store/reset") {
     state = {} as ReturnType<typeof rootReducer>;
   }
   return rootReducer(state, action);
 };
 
-export const storeReset = createAction('store/reset');
+export const storeReset = createAction("store/reset");
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage: localStorage, // utilizing localStorage for web and electron
   blacklist: [
     // slice.name,
@@ -51,7 +62,7 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(
   persistConfig,
-  resettableRootReducer as Reducer<ReturnType<typeof rootReducer>>,
+  resettableRootReducer as Reducer<ReturnType<typeof rootReducer>>
 );
 
 const store = configureStore({
@@ -73,7 +84,6 @@ const store = configureStore({
       },
     }),
 });
-
 
 export const persistor = persistStore(store);
 
