@@ -1,6 +1,7 @@
 export default {
   app: {
-    primary: '#204D6F',
-    accent: '#9ABCDB',
-  }
-}
+    primary: "#204D6F",
+    secondary: "#03243D",
+    accent: "#9ABCDB",
+  },
+};

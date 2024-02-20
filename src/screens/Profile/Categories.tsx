@@ -55,64 +55,71 @@ const Categories = () => {
   };
 
   return (
-    <VStack w="full">
-      <Heading as="h2" size="lg" marginY="4">
-        Select Categories
-      </Heading>
+    <VStack>
       <HStack>
-        <Box
-          borderWidth="1px"
-          borderRadius="lg"
-          borderColor="gray.150"
-          p="4"
-          h="700px"
-          w="200px"
-          bg="app.accent"
-        >
-          <VStack>
-            {availableCategories.map((value, index) => {
-              return (
-                <Tag
-                  _hover={{ cursor: "pointer", bg: "app.secondary" }}
-                  size="lg"
-                  key={index}
-                  bg="app.primary"
-                  color="white"
-                  onClick={() => handleAddCategory(value)}
-                >
-                  {value.title}
-                </Tag>
-              );
-            })}
-          </VStack>
-        </Box>
+        <VStack>
+          <Heading as="h4" size="sm" marginBottom="4">
+            Available Categories
+          </Heading>
+          <Box
+            borderWidth="1px"
+            borderRadius="lg"
+            borderColor="gray.150"
+            p="4"
+            h="700px"
+            w="200px"
+            bg="app.accent"
+          >
+            <VStack>
+              {availableCategories.map((value, index) => {
+                return (
+                  <Tag
+                    _hover={{ cursor: "pointer", bg: "app.secondary" }}
+                    size="lg"
+                    key={index}
+                    bg="app.primary"
+                    color="white"
+                    onClick={() => handleAddCategory(value)}
+                  >
+                    {value.title}
+                  </Tag>
+                );
+              })}
+            </VStack>
+          </Box>
+        </VStack>
         <FontAwesomeIcon icon={faArrowRightArrowLeft} />
-        <Box
-          borderWidth="1px"
-          borderRadius="lg"
-          borderColor="gray.150"
-          p="4"
-          h="700px"
-          w="200px"
-          bg="app.accent"
-        >
-          <VStack>
-            {selectedCategories.map((value, index) => {
-              return (
-                <Tag
-                  bg="app.primary"
-                  color="white"
-                  key={index}
-                  _hover={{ cursor: "pointer", bg: "app.secondary" }}
-                  size="lg"
-                  onClick={() => handleRemoveCategory(value)}
-                >
-                  {value.title}
-                </Tag>
-              );
-            })}
-          </VStack>
-        </Box>
+        <VStack>
+          <Heading as="h4" size="sm" marginBottom="4">
+            Added Categories
+          </Heading>
+          <Box
+            borderWidth="1px"
+            borderRadius="lg"
+            borderColor="gray.150"
+            p="4"
+            h="700px"
+            w="200px"
+            bg="app.accent"
+          >
+            <VStack>
+              {selectedCategories.map((value, index) => {
+                return (
+                  <Tag
+                    bg="app.primary"
+                    color="white"
+                    key={index}
+                    _hover={{ cursor: "pointer", bg: "app.secondary" }}
+                    size="lg"
+                    onClick={() => handleRemoveCategory(value)}
+                  >
+                    {value.title}
+                  </Tag>
+                );
+              })}
+            </VStack>
+          </Box>
+        </VStack>
       </HStack>
     </VStack>
   );

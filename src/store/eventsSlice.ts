@@ -8,8 +8,11 @@ type Event = {
   } | undefined,
   minParticipants: number,
   maxParticipants: number,
+  participants: string[] | undefined,
+  creator: string,
   start: number,
   end: number,
+  status: string,
   location: string,
   description: string
 };

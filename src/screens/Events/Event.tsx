@@ -10,51 +10,39 @@ import {
   Divider,
   VStack,
   Container,
-  Flex
+  Flex,
+  Box,
+  Spacer
 } from "@chakra-ui/react";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { parseTimestamp } from "../../utils/utils";
 import { Event } from "../../store/eventsSlice";
 
 interface Props {
-  data: Event,
-  onCancelEvent: () => {}
-}
-
-function parseTimestamp(timestamp: number) {
-  const date = new Date(timestamp);
-
-  // Get the date components
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // Add leading zero if needed
-  const day = String(date.getDate()).padStart(2, "0"); // Add leading zero if needed
-
-  // Get the time components
-  const hours = String(date.getHours()).padStart(2, "0"); // Add leading zero if needed
-  const minutes = String(date.getMinutes()).padStart(2, "0"); // Add leading zero if needed
-
-  // Construct the date and time strings
-  const dateString = `${year}/${month}/${day}`;
-  const timeString = `${hours}:${minutes}`;
-
-  return { dateString, timeString };
+  data: Event;
+  onCancelEvent: () => {};
 }
 
 const PendingEvent = ({ data, onCancelEvent }: Props) => {
-    const startDateTime = parseTimestamp(data.start);
+  const startDateTime = parseTimestamp(data.start);
   const endDateTime = parseTimestamp(data.end);
 
   return (
-    <Card
-      _hover={{ boxShadow: "outline" }}
-    >
-      <CardHeader bg="app.primary" borderTopLeftRadius="lg" borderTopRightRadius="lg">
+    <Card _hover={{ boxShadow: "outline" }}>
+      <CardHeader
+        bg="app.primary"
+        borderTopLeftRadius="lg"
+        borderTopRightRadius="lg"
+      >
         <Heading size="md" color="white">
           {data.category?.title}
         </Heading>
       </CardHeader>
       <Divider />
       <CardBody bg="app.accent">
-        <Flex w="400px">
+        <Flex w="600px">
           <VStack flex="2" align="flex-start">
             <HStack>
               <Text fontWeight="bold">Category: </Text>
@@ -83,17 +71,31 @@ const PendingEvent = ({ data, onCancelEvent }: Props) => {
               </Text>
             </HStack>
           </VStack>
-          <Container maxW="container.sm" flex="1">
+
+          <Box maxW="container.lg" flex="3">
+          <Text fontWeight="bold">Description: </Text>
             {data.description}
-          </Container>
+          </Box>
         </Flex>
       </CardBody>
       <CardFooter bg="app.accent">
-        <Button colorScheme="blue" variant="solid" marginRight="4">
-          View
+        <Button
+          variant="solid"
+          marginRight="4"
+          bg="app.primary"
+          color="white"
+          _hover={{ bg: "app.secondary" }}
+        >
+          <HStack spacing="2">
+            <FontAwesomeIcon icon={faEdit} />
+            <Text>Edit</Text>
+          </HStack>
         </Button>
-        <Button colorScheme="gray" variant="solid" onClick={onCancelEvent}>
-          Cancel
+        <Button colorScheme="red" variant="solid" onClick={onCancelEvent}>
+          <HStack spacing="2">
+            <FontAwesomeIcon icon={faTimes} />
+            <Text>Cancel</Text>
+          </HStack>
         </Button>
       </CardFooter>
     </Card>

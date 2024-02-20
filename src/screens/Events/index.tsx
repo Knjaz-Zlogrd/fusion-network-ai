@@ -1,15 +1,17 @@
-import { Heading, VStack, Center } from "@chakra-ui/react";
+import { Heading, VStack, Center, Text } from "@chakra-ui/react";
 import { useAppDispatch, RootState } from "../../store";
 import { useSelector } from "react-redux";
 import { removeEvent } from "../../store/eventsSlice";
-import PendingEvent from "./PendingEvent";
+import Event from "./Event";
 
-const Pending = () => {
+const Events = () => {
   const dispatch = useAppDispatch();
 
   const pendingEvents = useSelector(
     (state: RootState) => state.eventsSlice.events
   );
+
+    console.log("PENDING", pendingEvents);
 
   return (
     <VStack
@@ -30,13 +32,17 @@ const Pending = () => {
         },
       }}
     >
-      <Heading as="h2" size="lg" marginBottom="4">
-        Pending Events
+      <Heading as="h2" size="lg" marginY="4">
+        Upcoming Events
       </Heading>
-
-      {pendingEvents.map((item) => {
+      {!pendingEvents.length && 
+      
+        <Text>
+          You have no upcoming events would you like to 
+        </Text>}
+      {pendingEvents.length && pendingEvents.map((item) => {
         return (
-          <PendingEvent
+          <Event
             key={item.id}
             data={item}
             onCancelEvent={() => dispatch(removeEvent(item.id))}
@@ -47,4 +53,4 @@ const Pending = () => {
   );
 };
 
-export default Pending;
+export default Events;

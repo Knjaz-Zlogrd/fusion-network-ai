@@ -3,8 +3,10 @@ import { Flex, HStack } from '@chakra-ui/react';
 import Navigation from './Navigation';
 import { Route, Routes } from 'react-router-dom';
 import Create from '../Create';
-import Pending from '../Pending';
+import Pending from '../Events';
 import Categories from '../Categories';
+import Profile from '../Profile';
+import History from '../History';
 
 const Home = () => {
   return (
@@ -21,9 +23,11 @@ const Home = () => {
       </Flex>
       <Flex as="main" flex="1">
         <Routes>
+          <Route path="profile" element={<Profile />}/>
           <Route path="create" element={<Create />}/>
-          <Route path="pending" element={<Pending />}/>
+          <Route path="events" element={<Pending />}/>
           <Route path="categories" element={<Categories />}/>
+          <Route path="history" element={<History />}/>
         </Routes>
       </Flex>
     </HStack>
