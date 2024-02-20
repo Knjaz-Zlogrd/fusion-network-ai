@@ -16,6 +16,8 @@ const app = firebase.initializeApp({
 export const auth = app.auth();
 export default app;
 
+export const db = getDatabase();
+
 export function writeUserData(
   userId: string, 
   firebaseId: string,
@@ -26,7 +28,6 @@ export function writeUserData(
   address: string, 
   description: string, 
   phoneNumber: string) {
-  const db = getDatabase();
   const reference = ref(db, 'users/' + userId)
 
   set(reference, {

@@ -10,9 +10,14 @@ import {
   FormLabel,
   Input,
   Box,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import Categories from "./Categories";
+import { useAppSelector } from "../../store";
+import { getOwnUserInfo } from "../../store/usersSlice";
 const Profile = () => {
+  const currentUser = useAppSelector((state) => getOwnUserInfo( state.usersSlice.allUsers));
+
   return (
     <VStack w="full">
       <Heading as="h2" size="lg" marginY="4">
@@ -38,15 +43,15 @@ const Profile = () => {
               <VStack>
                 <FormControl>
                   <FormLabel>Name</FormLabel>
-                  <Input type="text" name="name" bg="gray.100" />
+                  <Input type="text" name="name" bg="gray.100" value={currentUser?.name} />
                 </FormControl>
                 <FormControl>
                   <FormLabel>Email</FormLabel>
-                  <Input type="text" name="location" bg="gray.100" />
+                  <Input type="text" name="location" bg="gray.100"  value={currentUser?.email} />
                 </FormControl>
                 <FormControl>
                   <FormLabel>Location</FormLabel>
-                  <Input type="text" name="location" bg="gray.100" />
+                  <Input type="text" name="location" bg="gray.100"  value={currentUser?.address} />
                 </FormControl>
                 <FormControl>
                   <FormLabel>Description</FormLabel>
@@ -55,6 +60,7 @@ const Profile = () => {
                     name="description"
                     bg="gray.100"
                     resize="none"
+                    defaultValue={currentUser?.description}
                   />
                 </FormControl>
               </VStack>

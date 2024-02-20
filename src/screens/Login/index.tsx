@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../store';
 import { signInWithEmailAndPassword, } from 'firebase/auth';
 import { auth, writeUserData } from '../../firebaseConfig';
-import { addAuthToken } from '../../store/loginSlice';
+import { addAuthToken, addUID } from '../../store/loginSlice';
 
 const Login = () => {
 
@@ -23,6 +23,8 @@ const Login = () => {
         loginPassword
       );
       const token = await user.user.getIdToken();
+      const uid = user.user.uid;
+      dispatch(addUID(uid));
       
       if (token) {   
         dispatch(addAuthToken(token));

@@ -6,8 +6,26 @@ import Create from '../Create';
 import Pending from '../Events';
 import Profile from '../Profile';
 import History from '../History';
+import { onValue, ref } from '@firebase/database';
+import { useAppDispatch } from '../../store';
+import { db } from '../../firebaseConfig';
+import { User, addAllUsers } from '../../store/usersSlice';
 
 const Home = () => {
+  const dispatch = useAppDispatch();
+  const usersRef = ref(db, 'users');
+
+
+  onValue(usersRef, (snapshot) => {
+    const data = snapshot.val();
+    const allUsers: Record<string, User> = {}
+
+    for (const key in data) {
+      allUsers[key] = data[key]
+    }
+    dispatch(addAllUsers(allUsers));
+  });
+  
   return (
     <HStack 
       h="100vh" 

@@ -20,6 +20,7 @@ import {
   REGISTER,
   REHYDRATE,
 } from "redux-persist";
+import { usersSlice } from "./usersSlice";
 
 const authPersistConfig = {
   key: loginSlice.name,
@@ -29,11 +30,9 @@ const authPersistConfig = {
 
 const rootReducer = combineReducers({
   [loginSlice.name]: persistReducer(authPersistConfig, loginSlice.reducer),
+  [usersSlice.name]: usersSlice.reducer,
   [categoriesSlice.name]: categoriesSlice.reducer,
   [eventsSlice.name]: eventsSlice.reducer,
-  //   [slice.name]: slice.reducer
-  //   [slice.name]: slice.reducer
-  //   [slice.name]: slice.reducer
 });
 
 const resettableRootReducer = (
