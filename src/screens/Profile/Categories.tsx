@@ -69,6 +69,7 @@ const Categories = () => {
             h="700px"
             w="200px"
             bg="app.accent"
+            boxShadow="md"
           >
             <VStack>
               {availableCategories.map((value, index) => {
@@ -101,6 +102,7 @@ const Categories = () => {
             h="700px"
             w="200px"
             bg="app.accent"
+            boxShadow="md"
           >
             <VStack>
               {selectedCategories.map((value, index) => {

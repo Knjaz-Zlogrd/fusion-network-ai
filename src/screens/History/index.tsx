@@ -103,7 +103,7 @@ const History = () => {
       <Heading as="h2" size="lg" marginY="4">
         Event History
       </Heading>
-      <Box bg="app.accent" w="75%" p="8" borderRadius="lg">
+      <Box bg="app.accent" w="75%" p="8" borderRadius="lg" boxShadow='md'>
         <Accordion allowMultiple >
           {HISTORY.map((event, index) => {
             return <HistoryItem key={index} data={event}/>;

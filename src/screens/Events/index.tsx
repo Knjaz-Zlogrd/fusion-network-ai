@@ -11,8 +11,6 @@ const Events = () => {
     (state: RootState) => state.eventsSlice.events
   );
 
-    console.log("PENDING", pendingEvents);
-
   return (
     <VStack
       w="full"

@@ -30,7 +30,7 @@ const PendingEvent = ({ data, onCancelEvent }: Props) => {
   const endDateTime = parseTimestamp(data.end);
 
   return (
-    <Card _hover={{ boxShadow: "outline" }}>
+    <Card _hover={{ boxShadow: "outline" }} boxShadow='md'>
       <CardHeader
         bg="app.primary"
         borderTopLeftRadius="lg"

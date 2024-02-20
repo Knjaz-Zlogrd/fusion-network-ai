@@ -28,7 +28,8 @@ const Profile = () => {
               bg="app.accent"
               borderWidth="1px"
               borderRadius="lg"
-              borderColor="gray.150"
+              borderColor="gray.100"
+              boxShadow="md"
               mr="32px"
               w="400px"
               h="700px"
@@ -37,19 +38,19 @@ const Profile = () => {
               <VStack>
                 <FormControl>
                   <FormLabel>Name</FormLabel>
-                  <Input type="text" name="name" bg="gray.150" />
+                  <Input type="text" name="name" bg="gray.100" />
                 </FormControl>
                 <FormControl>
                   <FormLabel>Email</FormLabel>
-                  <Input type="text" name="location" bg="gray.150" />
+                  <Input type="text" name="location" bg="gray.100" />
                 </FormControl>
                 <FormControl>
                   <FormLabel>Location</FormLabel>
-                  <Input type="text" name="location" bg="gray.150" />
+                  <Input type="text" name="location" bg="gray.100" />
                 </FormControl>
                 <FormControl>
                   <FormLabel>Description</FormLabel>
-                  <Textarea rows={16} name="description" bg="gray.150" />
+                  <Textarea rows={16} name="description" bg="gray.100" />
                 </FormControl>
               </VStack>
             </Box>
