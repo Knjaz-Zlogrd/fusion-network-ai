@@ -31,14 +31,14 @@ const HISTORY = [
     maxParticipants: 10,
     creator: "Saban Saulic",
     participants: [
-      "John Doe",
-      "Alice Johnson",
-      "Michael Smith",
-      "Emma Watson",
       "David Brown",
       "Sophia Lee",
       "Daniel Garcia",
       "Olivia Martinez",
+      "John Doe",
+      "Alice Johnson",
+      "Michael Smith",
+      "Emma Watson",
       "James Taylor",
     ],
     status: "Rejected",
@@ -57,7 +57,7 @@ const HISTORY = [
     minParticipants: 3,
     maxParticipants: 5,
     creator: "Aca Lukas",
-    participants: ["John Doe", "Alice Johnson", "Michael Smith", "Emma Watson"],
+    participants: ["Michael Smith", "Emma Watson", "John Doe", "Alice Johnson"],
     status: "Canceled",
     start: 1709246700000,
     end: 1709247540000,
@@ -73,7 +73,7 @@ const HISTORY = [
     minParticipants: 2,
     maxParticipants: 5,
     creator: "Boban Rajovic",
-    participants: ["John Doe", "Alice Johnson", "Michael Smith", "Emma Watson"],
+    participants: ["Alice Johnson", "Michael Smith", "John Doe", "Emma Watson"],
     status: "Accepted",
     start: 1709160300000,
     end: 1709161140000,
@@ -89,7 +89,7 @@ const History = () => {
         "&::-webkit-scrollbar": {
           width: "8px",
         },
-        scrollbarWidth: "thin",
+        scrollbarWidth: "none",
         "&::-webkit-scrollbar-thumb": {
           borderRadius: "24px",
         },
@@ -103,10 +103,10 @@ const History = () => {
       <Heading as="h2" size="lg" marginY="4">
         Event History
       </Heading>
-      <Box bg="app.accent" w="75%" p="8" borderRadius="lg" boxShadow='md'>
-        <Accordion allowMultiple >
+      <Box bg="app.accent" w="75%" p="8" borderRadius="lg" boxShadow="md">
+        <Accordion allowMultiple>
           {HISTORY.map((event, index) => {
-            return <HistoryItem key={index} data={event}/>;
+            return <HistoryItem key={index} data={event} />;
           })}
         </Accordion>
       </Box>

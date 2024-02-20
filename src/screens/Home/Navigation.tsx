@@ -128,30 +128,6 @@ const Navigation = () => {
               </Link>
             </ListItem>
             <ListItem onClick={handleResetRoutes}>
-              <Link as={RouterLink} to={"categories"} _hover={{style: 'none'}}>
-                <HStack
-                  h="12"
-                  pl="8"
-                  bg={useRouteMatchValue({ path: "/home/categories" }, [
-                    "app.accent",
-                    "transparent",
-                  ])}
-                >
-                  <Box h="5" w="5" mb="2px">
-                    <FontAwesomeIcon icon={faThList} color="gray" />
-                  </Box>
-                  <Text
-                    color="white"
-                    fontWeight="semibold"
-                    fontSize="18"
-                    fontFamily="heading"
-                  >
-                    Categories
-                  </Text>
-                </HStack>
-              </Link>
-            </ListItem>
-            <ListItem onClick={handleResetRoutes}>
               <Link as={RouterLink} to={"history"} _hover={{style: 'none'}}>
                 <HStack
                   h="12"

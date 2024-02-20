@@ -107,6 +107,7 @@ const Create = () => {
           borderColor="gray.100"
           margin="auto"
           bg="app.accent"
+          boxShadow="md"
           top="30%"
           p="4"
         >

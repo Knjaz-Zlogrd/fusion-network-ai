@@ -19,7 +19,7 @@ const Events = () => {
         "&::-webkit-scrollbar": {
           width: "8px",
         },
-        scrollbarWidth: "thin",
+        scrollbarWidth: "none",
         "&::-webkit-scrollbar-thumb": {
           borderRadius: "24px",
         },

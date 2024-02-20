@@ -9,6 +9,9 @@ import {
   Tag,
   Flex,
   VStack,
+  Avatar,
+  AvatarGroup,
+  WrapItem,
 } from "@chakra-ui/react";
 import { faMinus, faPlus, faSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -32,7 +35,8 @@ const tagColors: StringKeys = {
 const HistoryItem = ({ data }: Props) => {
   const startDate = parseTimestamp(data.start);
   const endDate = parseTimestamp(data.end);
-
+  const participants = [...(data.participants || []), data.creator];
+  console.log("PART", participants);
   return (
     <AccordionItem bg="gray.300" mb="2px">
       {({ isExpanded }) => (
@@ -98,10 +102,6 @@ const HistoryItem = ({ data }: Props) => {
                   </Tag>
                 </HStack>
                 <HStack>
-                  <Text as="b">Location: </Text>
-                  <Text>{data.location}</Text>
-                </HStack>
-                <HStack>
                   <Text as="b">Start: </Text>
                   <Text>
                     {startDate.dateString} {startDate.timeString}
@@ -114,16 +114,32 @@ const HistoryItem = ({ data }: Props) => {
                   </Text>
                 </HStack>
                 <HStack>
+                  <Text as="b">Location: </Text>
+                  <Text>{data.location}</Text>
+                </HStack>
+                <HStack>
                   <Text as="b">Created by: </Text>
                   <Text>{data.creator}</Text>
                 </HStack>
                 <HStack>
-                  <Text as="b">Participants: </Text>
-                  <Text>
-                    {(data.participants?.length || 0) + 1}/
-                    {data.maxParticipants}
+                  <Text as="b">
+                    Participants ({(data.participants?.length || 0) + 1}/
+                    {data.maxParticipants}):
                   </Text>
                 </HStack>
+                <AvatarGroup size="md" max={2}>
+                  {participants.map((participant) => {
+                    return (
+                      <WrapItem>
+                        <Avatar
+                          size="md"
+                          name={participant}
+                          title={participant}
+                        />
+                      </WrapItem>
+                    );
+                  })}
+                </AvatarGroup>
               </VStack>
               <Box flex="4">
                 <Text fontWeight="bold">Description: </Text>

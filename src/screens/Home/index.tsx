@@ -4,7 +4,6 @@ import Navigation from './Navigation';
 import { Route, Routes } from 'react-router-dom';
 import Create from '../Create';
 import Pending from '../Events';
-import Categories from '../Categories';
 import Profile from '../Profile';
 import History from '../History';
 
@@ -26,7 +25,6 @@ const Home = () => {
           <Route path="profile" element={<Profile />}/>
           <Route path="create" element={<Create />}/>
           <Route path="events" element={<Pending />}/>
-          <Route path="categories" element={<Categories />}/>
           <Route path="history" element={<History />}/>
         </Routes>
       </Flex>

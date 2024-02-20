@@ -50,7 +50,12 @@ const Profile = () => {
                 </FormControl>
                 <FormControl>
                   <FormLabel>Description</FormLabel>
-                  <Textarea rows={16} name="description" bg="gray.100" />
+                  <Textarea
+                    rows={16}
+                    name="description"
+                    bg="gray.100"
+                    resize="none"
+                  />
                 </FormControl>
               </VStack>
             </Box>
