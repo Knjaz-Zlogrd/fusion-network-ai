@@ -16,7 +16,7 @@ import Categories from "./Categories";
 import { useAppSelector } from "../../store";
 import { getOwnUserInfo } from "../../store/usersSlice";
 const Profile = () => {
-  const currentUser = useAppSelector((state) => getOwnUserInfo( state.usersSlice.allUsers));
+  const currentUser = useAppSelector((state) => getOwnUserInfo(state.usersSlice.allUsers));
 
   return (
     <VStack w="full">
@@ -69,7 +69,7 @@ const Profile = () => {
         </VStack>
         <Spacer></Spacer>
         <Box flex="1">
-          <Categories></Categories>
+          <Categories currentUser={currentUser}></Categories>
         </Box>
       </Flex>
     </VStack>

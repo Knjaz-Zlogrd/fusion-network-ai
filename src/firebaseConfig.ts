@@ -27,7 +27,8 @@ export function writeUserData(
   city: string, 
   address: string, 
   description: string, 
-  phoneNumber: string) {
+  phoneNumber: string,
+  categories: string[]) {
   const reference = ref(db, 'users/' + userId)
 
   set(reference, {
@@ -39,5 +40,6 @@ export function writeUserData(
     address: address,
     description: description,
     phoneNumber: phoneNumber,
+    categories: categories,
   })
 }

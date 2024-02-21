@@ -1,10 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { useAppDispatch, RootState } from "../../store";
+import { useAppDispatch, RootState, useAppSelector } from "../../store";
 import { addCategory, removeCategory } from "../../store/categoriesSlice";
-import { useSelector } from "react-redux";
 import { Heading, HStack, VStack, Box, Tag } from "@chakra-ui/react";
+import { User, getKeyFromFirebaseId } from "../../store/usersSlice";
+import { db, writeUserData } from "../../firebaseConfig";
+import { ref, set } from "@firebase/database";
 
 const INIT_CATEGORIES = [
   { id: "sports", title: "Sports" },
@@ -24,34 +26,55 @@ const INIT_CATEGORIES = [
   { id: "socializing", title: "Socializing" },
 ];
 
-interface Category {
+export type Category = {
   id: string;
   title: string;
 }
 
-const Categories = () => {
-  const selectedCategories = useSelector(
-    (state: RootState) => state.categoriesSlice.categories
-  );
+type CategoriesProps = {
+  currentUser: User | undefined;
+}
 
-  const [availableCategories, setAvailableCategories] = useState<Category[]>(
+const Categories = ({currentUser}: CategoriesProps) => {
+  const dispatch = useAppDispatch();
+
+  // const selectedCategories = useAppSelector(
+  //   (state) => state.categoriesSlice.categories
+  // );
+
+  const selectedCategories = currentUser?.categories;
+
+  const ownUid = useAppSelector((state) => state.loginSlice.uid)
+  const ownKey = useAppSelector((state) => getKeyFromFirebaseId(state.usersSlice, ownUid ?? ''));
+
+  const [availableCategories, setAvailableCategories] = useState(
     INIT_CATEGORIES.filter(
-      (category) => !selectedCategories.find((item) => item.id == category.id)
+      (category) => !selectedCategories?.find((item) => item?.id == category.id)
     )
   );
 
-  const dispatch = useAppDispatch();
+  const reference = ref(db, 'users/' + ownKey);
 
-  const handleAddCategory = (category: Category) => {
-    dispatch(addCategory(category));
+  const handleAddCategory = (categoryToAdd: Category) => {
+    const categories = currentUser?.categories || [];
+    if (currentUser) {
+      set(reference, {...currentUser, categories: [...categories, {id: categoryToAdd.id, title: categoryToAdd.title}]});
+    }
+    // dispatch(addCategory(category));
     setAvailableCategories((prevCategories) =>
-      prevCategories.filter((cat) => cat.id !== category.id)
+      prevCategories.filter((cat) => cat.id !== categoryToAdd.id)
     );
   };
 
-  const handleRemoveCategory = (category: Category) => {
-    dispatch(removeCategory(category.id));
-    setAvailableCategories((prevCategories) => [...prevCategories, category]);
+  const handleRemoveCategory = (categoryToRemove: Category) => {
+    // dispatch(removeCategory(categoryId));
+    if (currentUser) {
+      const updatedCategories = currentUser.categories.filter(cat => cat.id !== categoryToRemove.id);
+      set(reference, {...currentUser, categories: updatedCategories});
+    }
+    if (categoryToRemove) {
+      setAvailableCategories((prevCategories) => [...prevCategories, categoryToRemove]);
+    }
   };
 
   return (
@@ -105,7 +128,7 @@ const Categories = () => {
             boxShadow="md"
           >
             <VStack>
-              {selectedCategories.map((value, index) => {
+              {selectedCategories?.map((value, index) => {
                 return (
                   <Tag
                     bg="app.primary"
@@ -115,7 +138,7 @@ const Categories = () => {
                     size="lg"
                     onClick={() => handleRemoveCategory(value)}
                   >
-                    {value.title}
+                    {value?.title}
                   </Tag>
                 );
               })}

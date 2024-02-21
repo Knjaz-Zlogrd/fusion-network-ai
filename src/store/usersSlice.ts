@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { sortBy, values } from "lodash";
+import { Category } from "../screens/Profile/Categories";
 import store from ".";
 
 export type User = {
@@ -11,6 +12,7 @@ export type User = {
   email: string;
   name: string;
   phoneNumber: string;
+  categories: Category[];
 }
 
 export type State = {
@@ -37,5 +39,13 @@ export const getOwnUserInfo = (users: Record<string, User>) => {
   const currentUser = allUsers.find((user) => user.firebaseId === uid)
   return currentUser;
 }
+
+export const getKeyFromFirebaseId = (state: State, firebaseId: string) => {
+    for (const key in state.allUsers) {
+      if (state.allUsers[key].firebaseId === firebaseId) {
+        return key;
+      }
+    }
+  };
 
 export const {addAllUsers} = usersSlice.actions;
