@@ -21,10 +21,10 @@ import { Event } from "../../store/eventsSlice";
 
 interface Props {
   data: Event;
-  onCancelEvent: () => {};
+  // onCancelEvent: () => {};
 }
 
-const PendingEvent = ({ data, onCancelEvent }: Props) => {
+const PendingEvent = ({ data }: Props) => {
   const startDateTime = parseTimestamp(data.start);
   const endDateTime = parseTimestamp(data.end);
 
@@ -53,7 +53,7 @@ const PendingEvent = ({ data, onCancelEvent }: Props) => {
                 <Text>{data.location}</Text>
               ) : (
                 <Link href={data.location} title={data.location} color="blue">
-                  Meeting URL
+                  AUCA Meeting
                 </Link>
               )}
             </HStack>
@@ -101,7 +101,7 @@ const PendingEvent = ({ data, onCancelEvent }: Props) => {
             <Text>Edit</Text>
           </HStack>
         </Button>
-        <Button colorScheme="red" variant="solid" onClick={onCancelEvent}>
+        <Button colorScheme="red" variant="solid" >
           <HStack spacing="2">
             <FontAwesomeIcon icon={faTimes} />
             <Text>Cancel</Text>

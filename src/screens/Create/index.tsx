@@ -1,7 +1,5 @@
 import React from "react";
-import { useState, useRef } from "react";
-import { useAppDispatch } from "../../store";
-import { addEvent } from "../../store/eventsSlice";
+import { useState } from "react";
 import { getTimestamp, generateRandomId } from "../../utils/utils";
 import { useAppSelector } from "../../store";
 import { ref, set } from "@firebase/database";
@@ -37,7 +35,7 @@ import {
   Link,
 } from "@chakra-ui/react";
 import Logo from "../../assets/Logo";
-import { getKeyFromFirebaseId, getOwnUserInfo } from "../../store/usersSlice";
+import { getKeyFromFirebaseId } from "../../store/usersSlice";
 
 const meetingUrl = "https://meet.cymbus.com/j?MID=48054762918";
 const today = new Date().toISOString().split("T")[0];

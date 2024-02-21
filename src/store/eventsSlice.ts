@@ -16,24 +16,22 @@ export type Event = {
 };
 
 type State = {
-  events: Event[];
+  events: Record<string, Event>;
 };
 
 const initialState: State = {
-  events: [],
+  events: {},
 };
 
 export const eventsSlice = createSlice({
   name: "eventsSlice",
   initialState,
   reducers: {
-    addEvent: (state, action: PayloadAction<Event>) => {
-      state.events = [...state.events, action.payload];
-    },
-    removeEvent: (state) => {
-      state.events = state.events;
+    
+    addAllEvents: (state, action: PayloadAction<Record<string, Event>>) => {
+      state.events = action.payload;
     },
   },
 });
 
-export const { addEvent, removeEvent } = eventsSlice.actions;
+export const { addAllEvents } = eventsSlice.actions;

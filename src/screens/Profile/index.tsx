@@ -30,7 +30,7 @@ const Profile = () => {
     getKeyFromFirebaseId(state.usersSlice, ownUid ?? "")
   );
   const reference = ref(db, "users/" + ownKey);
-  
+
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const updatedUser = {
@@ -112,14 +112,13 @@ const Profile = () => {
                   />
                 </FormControl>
               </VStack>
-              <Box mt="8px">
+              <Box mt="16px">
                 <Button
                   // colorScheme="blue"
                   bg="app.primary"
                   color="white"
                   variant="solid"
                   type="submit"
-                  marginRight="4"
                   _hover={{ bg: "app.secondary" }}
                 >
                   Save

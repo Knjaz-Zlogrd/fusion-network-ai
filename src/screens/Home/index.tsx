@@ -10,10 +10,12 @@ import { onValue, ref } from '@firebase/database';
 import { useAppDispatch } from '../../store';
 import { db } from '../../firebaseConfig';
 import { User, addAllUsers } from '../../store/usersSlice';
+import { Event, addAllEvents } from '../../store/eventsSlice';
 
 const Home = () => {
   const dispatch = useAppDispatch();
   const usersRef = ref(db, 'users');
+  const eventsRef = ref(db, 'events');
 
 
   onValue(usersRef, (snapshot) => {
@@ -24,6 +26,16 @@ const Home = () => {
       allUsers[key] = data[key]
     }
     dispatch(addAllUsers(allUsers));
+  });
+
+  onValue(eventsRef, (snapshot) => {
+    const data = snapshot.val();
+    const events: Record<string, Event> = {}
+
+    for (const key in data) {
+      events[key] = data[key]
+    }
+    dispatch(addAllEvents(events));
   });
   
   return (

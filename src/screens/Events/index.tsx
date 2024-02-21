@@ -1,15 +1,13 @@
-import { Heading, VStack, Center, Text } from "@chakra-ui/react";
-import { useAppDispatch, RootState } from "../../store";
-import { useSelector } from "react-redux";
-import { removeEvent } from "../../store/eventsSlice";
+import { Heading, VStack, Text } from "@chakra-ui/react";
+import { useAppSelector } from "../../store";
+import { values } from "lodash";
+// import { removeEvent } from "../../store/eventsSlice";
 import Event from "./Event";
 
 const Events = () => {
-  const dispatch = useAppDispatch();
-
-  const pendingEvents = useSelector(
-    (state: RootState) => state.eventsSlice.events
-  );
+  const events = useAppSelector((state) => state.eventsSlice.events);
+  console.log("EVENTS", values(events));
+  const eventsValues = values(events);
 
   return (
     <VStack
@@ -33,20 +31,20 @@ const Events = () => {
       <Heading as="h2" size="lg" marginY="4">
         Upcoming Events
       </Heading>
-      {!pendingEvents.length && 
-      
-        <Text>
-          You have no upcoming events would you like to 
-        </Text>}
-      {pendingEvents.length && pendingEvents.map((item, index) => {
-        return (
-          <Event
-            key={index}
-            data={item}
-            onCancelEvent={() => dispatch(removeEvent())}
-          />
-        );
-      })}
+      {!eventsValues.length && (
+        <Text>You have no upcoming events would you like to</Text>
+      )}
+
+      {eventsValues.length &&
+        eventsValues.map((item, index) => {
+          return (
+            <Event
+              key={index}
+              data={item}
+              // onCancelEvent={console.log("JEBOTE")}
+            />
+          );
+        })}
     </VStack>
   );
 };
