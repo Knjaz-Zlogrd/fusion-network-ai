@@ -20,6 +20,7 @@ import { parseTimestamp } from "../../utils/utils";
 
 interface Props {
   data: Event;
+  status: string;
 }
 
 interface StringKeys {
@@ -32,11 +33,10 @@ const tagColors: StringKeys = {
   Canceled: "gray",
 };
 
-const HistoryItem = ({ data }: Props) => {
+const HistoryItem = ({ data, status }: Props) => {
   const startDate = parseTimestamp(data.start);
   const endDate = parseTimestamp(data.end);
   const participants = [...(data.participants || []), data.creator];
-  console.log("PART", participants);
   return (
     <AccordionItem bg="gray.300" mb="2px">
       {({ isExpanded }) => (
@@ -51,9 +51,9 @@ const HistoryItem = ({ data }: Props) => {
                       <Text>|</Text>
                       <Tag
                         variant="solid"
-                        colorScheme={tagColors[data.status] || "green"}
+                        colorScheme={tagColors[status] || "green"}
                       >
-                        {data.status}
+                        {status}
                       </Tag>
                       <Text>|</Text>
                       <Text as="b">Start: </Text>
@@ -96,9 +96,9 @@ const HistoryItem = ({ data }: Props) => {
                   <Text as="b">Status: </Text>
                   <Tag
                     variant="solid"
-                    colorScheme={tagColors[data.status] || "green"}
+                    colorScheme={tagColors[status] || "green"}
                   >
-                    {data.status}
+                    {status}
                   </Tag>
                 </HStack>
                 <HStack>

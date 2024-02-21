@@ -9,10 +9,9 @@ import {
   Button,
   Divider,
   VStack,
-  Container,
   Flex,
   Box,
-  Spacer
+  Link,
 } from "@chakra-ui/react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,7 +29,7 @@ const PendingEvent = ({ data, onCancelEvent }: Props) => {
   const endDateTime = parseTimestamp(data.end);
 
   return (
-    <Card _hover={{ boxShadow: "outline" }} boxShadow='md'>
+    <Card _hover={{ boxShadow: "outline" }} boxShadow="md">
       <CardHeader
         bg="app.primary"
         borderTopLeftRadius="lg"
@@ -50,7 +49,13 @@ const PendingEvent = ({ data, onCancelEvent }: Props) => {
             </HStack>
             <HStack>
               <Text fontWeight="bold">Location: </Text>
-              <Text>{data.location}</Text>
+              {data.locationType === "onsite" ? (
+                <Text>{data.location}</Text>
+              ) : (
+                <Link href={data.location} title={data.location} color="blue">
+                  Meeting URL
+                </Link>
+              )}
             </HStack>
             <HStack>
               <Text fontWeight="bold">Participants: </Text>
@@ -72,8 +77,13 @@ const PendingEvent = ({ data, onCancelEvent }: Props) => {
             </HStack>
           </VStack>
 
-          <Box maxW="container.lg" flex="3">
-          <Text fontWeight="bold">Description: </Text>
+          <Box
+            maxW="container.lg"
+            flex="3"
+            wordBreak="break-word"
+            overflowWrap="break-word"
+          >
+            <Text fontWeight="bold">Description: </Text>
             {data.description}
           </Box>
         </Flex>

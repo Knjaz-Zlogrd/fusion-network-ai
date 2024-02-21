@@ -1,20 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Category } from "./categoriesSlice";
 
-type Event = {
-  id: string;
-  category: {
-    id: string,
-    title: string
-  } | undefined,
-  minParticipants: number,
-  maxParticipants: number,
-  participants: string[] | undefined,
-  creator: string,
-  start: number,
-  end: number,
-  status: string,
-  location: string,
-  description: string
+export type Event = {
+  category: Category | undefined;
+  minParticipants: number;
+  maxParticipants: number;
+  participants: string[] | undefined;
+  creator: string;
+  start: number;
+  end: number;
+  // status: string;
+  locationType: string | undefined;
+  location: string;
+  description: string;
 };
 
 type State = {
@@ -32,14 +30,10 @@ export const eventsSlice = createSlice({
     addEvent: (state, action: PayloadAction<Event>) => {
       state.events = [...state.events, action.payload];
     },
-    removeEvent: (state, action: PayloadAction<string>) => {
-      state.events = state.events.filter((event) => {
-        return event.id != action.payload;
-      });
+    removeEvent: (state) => {
+      state.events = state.events;
     },
   },
 });
 
 export const { addEvent, removeEvent } = eventsSlice.actions;
-
-export type { Event };

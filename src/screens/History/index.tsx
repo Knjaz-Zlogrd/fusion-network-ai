@@ -3,80 +3,106 @@ import HistoryItem from "./HistoryItem";
 
 const HISTORY = [
   {
-    id: "nCUEgsc2",
-    category: {
-      id: "gardening",
-      title: "Gardening",
-    },
-    location: "Novi Sad",
-    description:
-      "Sadimo biljke u saksije Sadimo biljke u saksije Sadimo biljke u saksije Sadimo biljke u saksije Sadimo biljke u saksije Sadimo biljke u saksije Sadimo biljke u saksije Sadimo biljke u saksije ",
-    minParticipants: 3,
-    maxParticipants: 5,
-    creator: "Sinan Sakic",
-    participants: ["John Doe", "Alice Johnson", "Michael Smith"],
     status: "Accepted",
-    start: 1707989400000,
-    end: 1707998100000,
+    event: {
+      id: "nCUEgsc2",
+      category: {
+        id: "gardening",
+        title: "Gardening",
+      },
+      location: "Novi Sad",
+      locationType: "onsite",
+      description:
+        "Sadimo biljke u saksije Sadimo biljke u saksije Sadimo biljke u saksije Sadimo biljke u saksije Sadimo biljke u saksije Sadimo biljke u saksije Sadimo biljke u saksije Sadimo biljke u saksije ",
+      minParticipants: 3,
+      maxParticipants: 5,
+      creator: "Sinan Sakic",
+      participants: ["John Doe", "Alice Johnson", "Michael Smith"],
+
+      start: 1707989400000,
+      end: 1707998100000,
+    },
   },
   {
-    id: "zz2f1roS",
-    category: {
-      id: "meditation",
-      title: "Meditation",
-    },
-    location: "dadada",
-    description: "dadada",
-    minParticipants: 0,
-    maxParticipants: 10,
-    creator: "Saban Saulic",
-    participants: [
-      "David Brown",
-      "Sophia Lee",
-      "Daniel Garcia",
-      "Olivia Martinez",
-      "John Doe",
-      "Alice Johnson",
-      "Michael Smith",
-      "Emma Watson",
-      "James Taylor",
-    ],
     status: "Rejected",
-    start: 1707087600000,
-    end: 1707087600000,
+    event: {
+      id: "zz2f1roS",
+      category: {
+        id: "meditation",
+        title: "Meditation",
+      },
+      location: "dadada",
+      description: "dadada",
+      locationType: "onsite",
+      minParticipants: 0,
+      maxParticipants: 10,
+      creator: "Saban Saulic",
+      participants: [
+        "David Brown",
+        "Sophia Lee",
+        "Daniel Garcia",
+        "Olivia Martinez",
+        "John Doe",
+        "Alice Johnson",
+        "Michael Smith",
+        "Emma Watson",
+        "James Taylor",
+      ],
+
+      start: 1707087600000,
+      end: 1707087600000,
+    },
   },
   {
-    id: "2XwwIxjV",
-    category: {
-      id: "indoorActivities",
-      title: "Indoor Activities",
-    },
-    location: "Kod Boreta",
-    description:
-      "Pozdrav za Debelog Boreta Pozdrav za Debelog Boreta Pozdrav za Debelog Boreta Pozdrav za Debelog Boreta Pozdrav za Debelog Boreta Pozdrav za Debelog Boreta Pozdrav za Debelog Boreta Pozdrav za Debelog Boreta Pozdrav za Debelog Boreta ",
-    minParticipants: 3,
-    maxParticipants: 5,
-    creator: "Aca Lukas",
-    participants: ["Michael Smith", "Emma Watson", "John Doe", "Alice Johnson"],
     status: "Canceled",
-    start: 1709246700000,
-    end: 1709247540000,
+    event: {
+      id: "2XwwIxjV",
+      category: {
+        id: "indoorActivities",
+        title: "Indoor Activities",
+      },
+      location: "Kod Boreta",
+      locationType: "onsite",
+      description:
+        "Pozdrav za Debelog Boreta Pozdrav za Debelog Boreta Pozdrav za Debelog Boreta Pozdrav za Debelog Boreta Pozdrav za Debelog Boreta Pozdrav za Debelog Boreta Pozdrav za Debelog Boreta Pozdrav za Debelog Boreta Pozdrav za Debelog Boreta ",
+      minParticipants: 3,
+      maxParticipants: 5,
+      creator: "Aca Lukas",
+      participants: [
+        "Michael Smith",
+        "Emma Watson",
+        "John Doe",
+        "Alice Johnson",
+      ],
+
+      start: 1709246700000,
+      end: 1709247540000,
+    },
   },
   {
-    id: "xRIPTBx0",
-    category: {
-      id: "outdoorActivities",
-      title: "Outdoor Activities",
-    },
-    location: "Kobajasi",
-    description: "Kurtomir",
-    minParticipants: 2,
-    maxParticipants: 5,
-    creator: "Boban Rajovic",
-    participants: ["Alice Johnson", "Michael Smith", "John Doe", "Emma Watson"],
     status: "Accepted",
-    start: 1709160300000,
-    end: 1709161140000,
+    event: {
+      id: "xRIPTBx0",
+      category: {
+        id: "outdoorActivities",
+        title: "Outdoor Activities",
+      },
+      locationType: "onsite",
+      location: "Kobajasi",
+      description: "Kurtomir",
+      minParticipants: 2,
+      maxParticipants: 5,
+      creator: "Boban Rajovic",
+      participants: [
+        "Alice Johnson",
+        "Michael Smith",
+        "John Doe",
+        "Emma Watson",
+      ],
+
+      start: 1709160300000,
+      end: 1709161140000,
+    },
   },
 ];
 
@@ -105,8 +131,8 @@ const History = () => {
       </Heading>
       <Box bg="app.accent" w="75%" p="8" borderRadius="lg" boxShadow="md">
         <Accordion allowMultiple>
-          {HISTORY.map((event, index) => {
-            return <HistoryItem key={index} data={event} />;
+          {HISTORY.map((item, index) => {
+            return <HistoryItem key={index} data={item.event} status={item.status}/>;
           })}
         </Accordion>
       </Box>

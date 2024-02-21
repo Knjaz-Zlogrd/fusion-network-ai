@@ -29,13 +29,14 @@ const INIT_CATEGORIES = [
 export type Category = {
   id: string;
   title: string;
-}
+};
 
 type CategoriesProps = {
   currentUser: User | undefined;
-}
+  ownKey: string | undefined;
+};
 
-const Categories = ({currentUser}: CategoriesProps) => {
+const Categories = ({ currentUser, ownKey }: CategoriesProps) => {
   const dispatch = useAppDispatch();
 
   // const selectedCategories = useAppSelector(
@@ -44,21 +45,24 @@ const Categories = ({currentUser}: CategoriesProps) => {
 
   const selectedCategories = currentUser?.categories;
 
-  const ownUid = useAppSelector((state) => state.loginSlice.uid)
-  const ownKey = useAppSelector((state) => getKeyFromFirebaseId(state.usersSlice, ownUid ?? ''));
-
   const [availableCategories, setAvailableCategories] = useState(
     INIT_CATEGORIES.filter(
       (category) => !selectedCategories?.find((item) => item?.id == category.id)
     )
   );
 
-  const reference = ref(db, 'users/' + ownKey);
+  const reference = ref(db, "users/" + ownKey);
 
   const handleAddCategory = (categoryToAdd: Category) => {
     const categories = currentUser?.categories || [];
     if (currentUser) {
-      set(reference, {...currentUser, categories: [...categories, {id: categoryToAdd.id, title: categoryToAdd.title}]});
+      set(reference, {
+        ...currentUser,
+        categories: [
+          ...categories,
+          { id: categoryToAdd.id, title: categoryToAdd.title },
+        ],
+      });
     }
     // dispatch(addCategory(category));
     setAvailableCategories((prevCategories) =>
@@ -69,11 +73,16 @@ const Categories = ({currentUser}: CategoriesProps) => {
   const handleRemoveCategory = (categoryToRemove: Category) => {
     // dispatch(removeCategory(categoryId));
     if (currentUser) {
-      const updatedCategories = currentUser.categories.filter(cat => cat.id !== categoryToRemove.id);
-      set(reference, {...currentUser, categories: updatedCategories});
+      const updatedCategories = currentUser.categories.filter(
+        (cat) => cat.id !== categoryToRemove.id
+      );
+      set(reference, { ...currentUser, categories: updatedCategories });
     }
     if (categoryToRemove) {
-      setAvailableCategories((prevCategories) => [...prevCategories, categoryToRemove]);
+      setAvailableCategories((prevCategories) => [
+        ...prevCategories,
+        categoryToRemove,
+      ]);
     }
   };
 
@@ -81,19 +90,19 @@ const Categories = ({currentUser}: CategoriesProps) => {
     <VStack>
       <HStack>
         <VStack>
-          <Heading as="h4" size="sm" marginBottom="4">
-            Available Categories
-          </Heading>
           <Box
             borderWidth="1px"
             borderRadius="lg"
             borderColor="gray.150"
             p="4"
-            h="700px"
+            h="750px"
             w="200px"
             bg="app.accent"
             boxShadow="md"
           >
+            <Heading as="h4" size="sm" marginBottom="4">
+              Available Categories
+            </Heading>
             <VStack>
               {availableCategories.map((value, index) => {
                 return (
@@ -114,20 +123,20 @@ const Categories = ({currentUser}: CategoriesProps) => {
         </VStack>
         <FontAwesomeIcon icon={faArrowRightArrowLeft} />
         <VStack>
-          <Heading as="h4" size="sm" marginBottom="4">
-            Added Categories
-          </Heading>
           <Box
             borderWidth="1px"
             borderRadius="lg"
             borderColor="gray.150"
             p="4"
-            h="700px"
+            h="750px"
             w="200px"
             bg="app.accent"
             boxShadow="md"
           >
             <VStack>
+              <Heading as="h4" size="sm" marginBottom="4">
+                Added Categories
+              </Heading>
               {selectedCategories?.map((value, index) => {
                 return (
                   <Tag

@@ -1,11 +1,12 @@
 import React from "react";
 import { useState, useRef } from "react";
-import { useAppDispatch, RootState } from "../../store";
-import { useSelector } from "react-redux";
+import { useAppDispatch } from "../../store";
 import { addEvent } from "../../store/eventsSlice";
 import { getTimestamp, generateRandomId } from "../../utils/utils";
+import { useAppSelector } from "../../store";
+import { ref, set } from "@firebase/database";
+import { db } from "../../firebaseConfig";
 import {
-  Center,
   Flex,
   VStack,
   Input,
@@ -29,18 +30,32 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   useToast,
+  Switch,
+  Radio,
+  RadioGroup,
+  Text,
+  Link,
 } from "@chakra-ui/react";
+import Logo from "../../assets/Logo";
+import { getKeyFromFirebaseId, getOwnUserInfo } from "../../store/usersSlice";
 
+const meetingUrl = "https://meet.cymbus.com/j?MID=48054762918";
 const today = new Date().toISOString().split("T")[0];
 
 const Create = () => {
   const [sliderMinMax, setSliderMinMax] = useState([0, 0]);
 
-  const selectedCategories = useSelector(
-    (state: RootState) => state.categoriesSlice.categories
+  const [eventType, setEventType] = React.useState("onsite");
+  const [channelIsChecked, setChannelIsChecked] = useState(false);
+  const selectedCategories = useAppSelector(
+    (state) => state.categoriesSlice.categories
   );
 
-  const dispatch = useAppDispatch();
+  const ownUid = useAppSelector((state) => state.loginSlice.uid);
+  const ownKey = useAppSelector((state) =>
+    getKeyFromFirebaseId(state.usersSlice, ownUid ?? "")
+  );
+  
   const toast = useToast();
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -48,18 +63,23 @@ const Create = () => {
 
     const formData = new FormData(event.currentTarget);
     const data = Object.fromEntries(formData.entries());
+    const locationType = data.locationType as string;
+    const location =
+      locationType === "onsite" ? (data.location as string) : meetingUrl;
+    const eventId = generateRandomId()
     const newEvent = {
-      id: generateRandomId(),
       category: selectedCategories.find(
         (category) => category.id == data.category
       ),
-      location: data.location as string,
+      locationType: locationType,
+      location: location,
       description: data.description as string,
       minParticipants: parseFloat(data["participants-0"] as string),
       maxParticipants: parseFloat(data["participants-1"] as string),
       participants: [],
-      creator: "Boban Rajovic",
-      status: "Pending",
+      creator: ownKey,
+      // status: "Pending",
+      createChannel: channelIsChecked,
       start: getTimestamp(
         formData.get("date") as string,
         parseFloat(data.startH as string),
@@ -71,8 +91,9 @@ const Create = () => {
         parseFloat(data.endM as string)
       ),
     };
-
-    dispatch(addEvent(newEvent));
+    const reference = ref(db, "events/" + eventId);
+    set(reference, newEvent);
+    // dispatch(addEvent(newEvent));
     event.currentTarget.reset();
 
     toast({
@@ -84,6 +105,10 @@ const Create = () => {
     });
   }
 
+  function handleCheckChannel() {
+    setChannelIsChecked((prevValue) => !prevValue);
+  }
+
   const formatHM = (value: number) => {
     if (value < 10) {
       const formatted = `0${value}`.replace(/0*/, "0");
@@ -93,7 +118,7 @@ const Create = () => {
   };
 
   return (
-    <VStack>
+    <VStack w="full">
       <Heading as="h2" size="lg" marginY="4">
         Create Event
       </Heading>
@@ -125,12 +150,12 @@ const Create = () => {
               </Select>
             </FormControl>
           </GridItem>
-          <GridItem rowSpan={3}>
+          <GridItem rowSpan={4}>
             <FormControl isRequired>
               <FormLabel>Description</FormLabel>
               <Textarea
                 resize="none"
-                rows={10}
+                rows={12}
                 name="description"
                 bg="gray.100"
               />
@@ -156,7 +181,6 @@ const Create = () => {
                     setSliderMinMax(val);
                   }}
                   name="participants"
-                
                 >
                   <RangeSliderTrack>
                     <RangeSliderFilledTrack />
@@ -194,7 +218,7 @@ const Create = () => {
               </FormControl>
             </HStack>
             <HStack mt="4">
-              <FormControl>
+              <FormControl isRequired>
                 <FormLabel>End (h)</FormLabel>
                 <NumberInput defaultValue={0} min={0} max={24}>
                   <NumberInputField name="endH" bg="gray.100" />
@@ -204,7 +228,7 @@ const Create = () => {
                   </NumberInputStepper>
                 </NumberInput>
               </FormControl>
-              <FormControl>
+              <FormControl isRequired>
                 <FormLabel>(m)</FormLabel>
                 <NumberInput defaultValue={0} min={0} max={60}>
                   <NumberInputField name="endM" bg="gray.100" />
@@ -219,18 +243,60 @@ const Create = () => {
           <GridItem>
             <FormControl isRequired>
               <FormLabel>Location</FormLabel>
-              <Input type="text" name="location" bg="gray.100" />
+              <RadioGroup
+                name="locationType"
+                mb="4px"
+                defaultValue="onsite"
+                onChange={setEventType}
+                value={eventType}
+              >
+                <HStack>
+                  <Radio value="onsite" bg="white">
+                    Onsite
+                  </Radio>
+                  <Radio value="online" bg="white">
+                    Online
+                  </Radio>
+                </HStack>
+              </RadioGroup>
+              {eventType === "online" ? (
+                <Flex
+                  h="40px"
+                  alignItems="center"
+                  bg="gray.100"
+                  borderRadius="4px"
+                >
+                  <Link color="blue">{meetingUrl}</Link>
+                </Flex>
+              ) : (
+                <Input type="text" name="location" bg="gray.100" />
+              )}
             </FormControl>
           </GridItem>
-          <GridItem colEnd={4}>
+          <GridItem>
+            <FormControl display="flex" alignItems="center">
+              <FormLabel htmlFor="create-channel" mb="0">
+                <HStack>
+                  <Logo />
+                  <Text>Create AUCA channel?</Text>
+                </HStack>
+              </FormLabel>
+              <Switch
+                id="create-channel"
+                name="createChannel"
+                isChecked={channelIsChecked}
+                onChange={handleCheckChannel}
+              />
+            </FormControl>
+          </GridItem>
+          <GridItem colSpan={3}>
             <HStack>
               <Button
-                // colorScheme="blue"
                 bg="app.primary"
                 color="white"
                 variant="solid"
                 type="submit"
-                marginRight="4"
+                marginRight="4px"
                 _hover={{ bg: "app.secondary" }}
               >
                 Create

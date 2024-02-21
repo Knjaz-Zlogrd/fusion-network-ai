@@ -38,12 +38,12 @@ const Events = () => {
         <Text>
           You have no upcoming events would you like to 
         </Text>}
-      {pendingEvents.length && pendingEvents.map((item) => {
+      {pendingEvents.length && pendingEvents.map((item, index) => {
         return (
           <Event
-            key={item.id}
+            key={index}
             data={item}
-            onCancelEvent={() => dispatch(removeEvent(item.id))}
+            onCancelEvent={() => dispatch(removeEvent())}
           />
         );
       })}

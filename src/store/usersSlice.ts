@@ -8,6 +8,7 @@ export type User = {
   id: string;
   address: string;
   country: string;
+  city: string;
   description: string;
   email: string;
   name: string;
