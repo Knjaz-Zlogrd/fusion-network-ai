@@ -23,6 +23,7 @@ import {
   AvatarGroup,
   WrapItem,
   Avatar,
+  useToast,
 } from "@chakra-ui/react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -55,6 +56,7 @@ const PendingEvent = ({
   onRejectEvent,
 }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
   const startDateTime = parseTimestamp(data.start);
   const endDateTime = parseTimestamp(data.end);
 
@@ -72,6 +74,13 @@ const PendingEvent = ({
     set(reference, {
       ...data,
       status: "canceled",
+    });
+    toast({
+      title: ":(",
+      description: "Event was canceled.",
+      status: "warning",
+      duration: 3000,
+      isClosable: true,
     });
   };
 
