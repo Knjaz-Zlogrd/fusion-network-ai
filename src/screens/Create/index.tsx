@@ -71,7 +71,6 @@ const Create = () => {
       locationType === "onsite" ? (data.location as string) : meetingUrl;
     const eventId = generateRandomId();
     const userInvitations = getUsersWithCategory(data.category as string);
-    console.log("USERS WITH CAT", userInvitations);
 
     const newEvent = {
       category: categories?.find((category) => category.id == data.category),
@@ -97,7 +96,6 @@ const Create = () => {
       invitations: userInvitations,
     };
     const eventReference = ref(db, "events/" + eventId);
-    console.log("EVENT", newEvent);
     set(eventReference, newEvent);
     event.currentTarget.reset();
 
