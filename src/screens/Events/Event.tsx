@@ -28,10 +28,12 @@ import { getKeyFromFirebaseId } from "../../store/usersSlice";
 
 interface Props {
   data: Event;
-  // onCancelEvent: () => {};
-}
+  onCancelEvent?: any;
+  onAcceptEvent: any;
+  onRejectEvent?: any;
+} 
 
-const PendingEvent = ({ data }: Props) => {
+const PendingEvent = ({ data, onCancelEvent, onAcceptEvent, onRejectEvent }: Props) => {
   const startDateTime = parseTimestamp(data.start);
   const endDateTime = parseTimestamp(data.end);
 
@@ -43,7 +45,6 @@ const PendingEvent = ({ data }: Props) => {
   const creator = useAppSelector(
     (state) => state.usersSlice.allUsers[data.creator]
   );
-  console.log("CREATOR", creator);
 
   return (
     <Card _hover={{ boxShadow: "outline" }} boxShadow="md">
@@ -137,7 +138,7 @@ const PendingEvent = ({ data }: Props) => {
           </>
         ) : (
           <>
-            <Button variant="solid" marginRight="4" colorScheme="green">
+            <Button variant="solid" marginRight="4" colorScheme="green" onClick={onAcceptEvent}>
               <HStack spacing="2">
                 <FontAwesomeIcon icon={faCheck} />
                 <Text>Accept</Text>

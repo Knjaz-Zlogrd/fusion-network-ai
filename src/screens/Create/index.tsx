@@ -38,7 +38,7 @@ import Logo from "../../assets/Logo";
 import {
   getKeyFromFirebaseId,
   getOwnUserInfo,
-  getUsersWithCategory,
+  createInvitations,
 } from "../../store/usersSlice";
 
 const meetingUrl = "https://meet.cymbus.com/j?MID=48054762918";
@@ -67,10 +67,9 @@ const Create = () => {
     const formData = new FormData(event.currentTarget);
     const data = Object.fromEntries(formData.entries());
     const locationType = data.locationType as string;
-    const location =
-      locationType === "onsite" ? (data.location as string) : meetingUrl;
+    const location = locationType === "onsite" ? (data.location as string) : meetingUrl;
     const eventId = generateRandomId();
-    const userInvitations = getUsersWithCategory(data.category as string);
+    const userInvitations = createInvitations(data.category as string, ownKey as string);
 
     const newEvent = {
       category: categories?.find((category) => category.id == data.category),

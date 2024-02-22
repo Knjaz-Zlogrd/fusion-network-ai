@@ -9,6 +9,7 @@ import { db } from "../../firebaseConfig";
 import { generateRandomId } from "../../utils/utils";
 import { useEffect, useState } from "react";
 import { getKeyFromFirebaseId } from "../../store/usersSlice";
+import { UserResponseStatus, updateInvitation } from "../../store/eventsSlice";
 
 interface UserEvent {
   event: Event;
@@ -22,11 +23,16 @@ const Events = () => {
   const ownKey = useAppSelector((state) =>
     getKeyFromFirebaseId(state.usersSlice, ownUid ?? "")
   );
-  // console.log("OWNKEY", ownKey);
-  console.log(events, "EVENTS");
+
   const eventsValues = values(events).filter((event) => {
     return event.invitations.find((invitation) => invitation.userId === ownKey);
   });
+
+  const invitationHandler = (eventId: string, status: UserResponseStatus) => {
+    const updated = updateInvitation(eventId, ownKey ?? "", status);
+    const eventReference = ref(db, "events/" + eventId);
+    set(eventReference, updated);
+  };
 
   // console.log("SHOW EVENTS", showEvents);
 
@@ -66,16 +72,34 @@ const Events = () => {
         </VStack>
       )}
 
-      {eventsValues.length &&
-        eventsValues.map((item, index) => {
-          return (
-            <Event
-              key={index}
-              data={item}
-              // onCancelEvent={console.log("JEBOTE")}
-            />
-          );
-        })}
+      {
+        eventsValues.length &&
+          Object.entries(events).map(([eventKey, event]) => {
+            return (
+              event.invitations.some(
+                (invitation) => invitation.userId === ownKey
+              ) && (
+                <Event
+                  key={eventKey}
+                  data={event}
+                  // onCancelEvent={console.log("JEBOTE")}
+                  onAcceptEvent={() => invitationHandler(eventKey, "accepted")}
+                  onRejectEvent={() => invitationHandler(eventKey, "rejected")}
+                />
+              )
+            );
+          })
+        // eventsValues.map((item, index) => {
+        //   return (
+        //     <Event
+        //       key={index}
+        //       data={item}
+        //       // onCancelEvent={console.log("JEBOTE")}
+        //       onAcceptEvent={}
+        //     />
+        //   );
+        // })}
+      }
     </VStack>
   );
 };

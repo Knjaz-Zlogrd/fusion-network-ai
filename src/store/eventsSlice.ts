@@ -4,15 +4,16 @@ import store from ".";
 import { generateRandomId } from "../utils/utils";
 import { ref, set } from "firebase/database";
 import { db } from "../firebaseConfig";
+import { stat } from "fs";
 
-export type EventStatus = 'pending' | 'canceled' | 'held';
+export type EventStatus = "pending" | "canceled" | "held";
 
-export type UserResponseStatus = 'pending' | 'accepted' | 'rejected';
+export type UserResponseStatus = "pending" | "accepted" | "rejected";
 
 export type Invitation = {
   userId: string;
-  status: UserResponseStatus;
-}
+  userStatus: UserResponseStatus;
+};
 
 export type Event = {
   category: Category | undefined;
@@ -47,6 +48,46 @@ export const eventsSlice = createSlice({
   },
 });
 
+export const updateInvitation = (
+  eventId: string,
+  userId: string,
+  status: UserResponseStatus
+) => {
+  const events = store.getState().eventsSlice.events;
+  const eventData = events[eventId];
+  // Find the index of the invitation with the matching userId
+  const invitationIndex = eventData.invitations.findIndex(
+    (invitation: Invitation) => invitation.userId === userId
+  );
+
+  // If the invitation with the provided userId is found
+  if (invitationIndex !== -1) {
+    // Create a copy of the original object
+    const updatedEventData = { ...eventData };
+
+    // Create a copy of the invitation object at the found index
+    const updatedInvitation = {
+      ...updatedEventData.invitations[invitationIndex],
+    };
+
+    // Update the userStatus of the invitation to "active"
+    updatedInvitation.userStatus = status;
+
+    // Update the invitations array in the copied object with the updated invitation
+    updatedEventData.invitations = [
+      ...updatedEventData.invitations.slice(0, invitationIndex),
+      updatedInvitation,
+      ...updatedEventData.invitations.slice(invitationIndex + 1),
+    ];
+
+    // Return the updated object
+    return updatedEventData;
+  }
+
+  // If the invitation with the provided userId is not found, return the original object
+  return eventData;
+};
+
 // export const createInvitation = async (eventId: string) => {
 //   const allUsers = store.getState().usersSlice.allUsers;
 //   const events = store.getState().eventsSlice.events;
@@ -63,7 +104,7 @@ export const eventsSlice = createSlice({
 //   const { category } = event;
 
 //   type MatchedUser = {
-//     userId: string; 
+//     userId: string;
 //     userStatus: string;
 //   }
 //   const matchedUsers: MatchedUser[] = [];
@@ -95,7 +136,7 @@ export const eventsSlice = createSlice({
 //   const invitations = Object.values(store.getState().invitationsSlice.invitations);
 
 //   const ownEvents = [];
-  
+
 //   for (const invitation in invitations) {
 //       // if (invitation.users)
 //   }

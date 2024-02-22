@@ -54,7 +54,7 @@ export const getKeyFromFirebaseId = (state: State, firebaseId: string) => {
   }
 };
 
-export const getUsersWithCategory = (categoryId: string) => {
+export const createInvitations = (categoryId: string, creatorId: string) => {
   const allUsers = store.getState().usersSlice.allUsers;
   console.log("USERS", allUsers);
   
@@ -64,7 +64,7 @@ export const getUsersWithCategory = (categoryId: string) => {
     if (user.categories && user.categories.some(cat => cat.id === categoryId)) {
       matchedUsers.push({
         userId: userKey,
-        userStatus: 'pending',
+        userStatus: (creatorId === userKey) ? 'accepted' : 'pending',
       });
     }
   });
