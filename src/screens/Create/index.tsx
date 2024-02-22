@@ -46,7 +46,7 @@ const today = new Date().toISOString().split("T")[0];
 
 const Create = () => {
   const toast = useToast();
-  const [sliderMinMax, setSliderMinMax] = useState([0, 0]);
+  const [sliderMinMax, setSliderMinMax] = useState([1, 1]);
 
   const [eventType, setEventType] = React.useState("onsite");
   const [channelIsChecked, setChannelIsChecked] = useState(false);
