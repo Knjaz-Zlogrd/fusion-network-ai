@@ -33,6 +33,7 @@ const History = () => {
       <Accordion allowMultiple>
         {data
           .filter(item => item.status === 'canceled' || item.end < Date.now())
+          .sort((a, b) => a.start - b.start) // Sort by start date
           .map((item, index) => {
             return <HistoryItem key={index} data={item} />;
           })}
