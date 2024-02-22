@@ -20,6 +20,9 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
+  AvatarGroup,
+  WrapItem,
+  Avatar,
 } from "@chakra-ui/react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,7 +33,7 @@ import {
   faBan,
 } from "@fortawesome/free-solid-svg-icons";
 import { capitalizeFirstLetter, parseTimestamp } from "../../utils/utils";
-import { Event } from "../../store/eventsSlice";
+import { Event, getAcceptedInvitationUsers } from "../../store/eventsSlice";
 import { useAppSelector } from "../../store";
 import { getKeyFromFirebaseId } from "../../store/usersSlice";
 import { ref, set } from "firebase/database";
@@ -42,9 +45,15 @@ interface Props {
   onCancelEvent?: any;
   onAcceptEvent: any;
   onRejectEvent?: any;
-} 
+}
 
-const PendingEvent = ({ data, eventId, onCancelEvent, onAcceptEvent, onRejectEvent }: Props) => {
+const PendingEvent = ({
+  data,
+  eventId,
+  onCancelEvent,
+  onAcceptEvent,
+  onRejectEvent,
+}: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const startDateTime = parseTimestamp(data.start);
   const endDateTime = parseTimestamp(data.end);
@@ -59,29 +68,35 @@ const PendingEvent = ({ data, eventId, onCancelEvent, onAcceptEvent, onRejectEve
   );
 
   const handleCancelEvent = () => {
-    const reference = ref(db, 'events/' + eventId)
+    const reference = ref(db, "events/" + eventId);
     set(reference, {
       ...data,
-      status: 'canceled'
-    })
-  }
+      status: "canceled",
+    });
+  };
 
-  const ownEventStatus = Object.values(data.invitations).find((item) => item.userId === ownKey)?.userStatus;
+  const ownEventStatus = Object.values(data.invitations).find(
+    (item) => item.userId === ownKey
+  )?.userStatus;
   const titleStatus = capitalizeFirstLetter(ownEventStatus ?? "");
 
-  let titleColor: string
+  const acceptedParticipants = getAcceptedInvitationUsers(eventId).map((user) => user.name);
+  console.log("ACCEPTED " + eventId, acceptedParticipants);
+  const eventFull = acceptedParticipants.length === data.maxParticipants;
+
+  let titleColor: string;
   const getTitleColor = () => {
     switch (ownEventStatus) {
-      case 'accepted':
-        return titleColor = 'green.500'
-      case 'pending':
-        return titleColor = 'orange'
-      case 'rejected':
-        return titleColor = 'red'
+      case "accepted":
+        return (titleColor = "green.500");
+      case "pending":
+        return (titleColor = "orange");
+      case "rejected":
+        return (titleColor = "red");
       default:
-        return 'white'
+        return "white";
     }
-  }
+  };
 
   return (
     <Card _hover={{ boxShadow: "outline" }} boxShadow="md">
@@ -91,7 +106,10 @@ const PendingEvent = ({ data, eventId, onCancelEvent, onAcceptEvent, onRejectEve
         borderTopRightRadius="lg"
       >
         <Heading size="md" color="white">
-          {data.category?.title} - <Text display="inline" color={getTitleColor()}>{titleStatus}</Text>
+          {data.category?.title} -{" "}
+          <Text display="inline" color={getTitleColor()}>
+            {eventFull ? "Full" : titleStatus}
+          </Text>
         </Heading>
       </CardHeader>
       <Divider />
@@ -121,12 +139,6 @@ const PendingEvent = ({ data, eventId, onCancelEvent, onAcceptEvent, onRejectEve
               </Text>
             </HStack>
             <HStack>
-              <Text fontWeight="bold">Participants: </Text>
-              <Text>
-                {data.minParticipants} - {data.maxParticipants}
-              </Text>
-            </HStack>
-            <HStack>
               <Text fontWeight="bold">Start: </Text>
               <Text>
                 {startDateTime.dateString} {startDateTime.timeString}
@@ -138,6 +150,22 @@ const PendingEvent = ({ data, eventId, onCancelEvent, onAcceptEvent, onRejectEve
                 {endDateTime.dateString} {endDateTime.timeString}
               </Text>
             </HStack>
+            <HStack>
+              <Text fontWeight="bold">Participants: </Text>
+              <Text>
+                {data.minParticipants} - {data.maxParticipants}
+              </Text>
+            </HStack>
+            <Text fontWeight="bold">Accepted ({acceptedParticipants.length}/{data.maxParticipants}): </Text>
+            <AvatarGroup max={2}>
+                  {acceptedParticipants.map((participant, index) => {
+                    return (
+                      <WrapItem key={index}>
+                        <Avatar size="sm" name={participant} title={participant} />
+                      </WrapItem>
+                    );
+                  })}
+                </AvatarGroup>
           </VStack>
 
           <Box
@@ -172,13 +200,20 @@ const PendingEvent = ({ data, eventId, onCancelEvent, onAcceptEvent, onRejectEve
                 <Text>Cancel</Text>
               </HStack>
             </Button>
-            <Modal isOpen={isOpen} onClose={onClose} size="xl" motionPreset="scale">
+            <Modal
+              isOpen={isOpen}
+              onClose={onClose}
+              size="xl"
+              motionPreset="scale"
+            >
               <ModalOverlay />
               <ModalContent position="absolute" top="25%" left="35%" h="20%">
                 <ModalHeader fontSize="24">Oh Noo</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
-                  <Text fontSize="20">Are you sure you want to cancel this event?</Text>
+                  <Text fontSize="20">
+                    Are you sure you want to cancel this event?
+                  </Text>
                   <Text fontSize="20">People will be sad :(</Text>
                 </ModalBody>
 
@@ -186,29 +221,41 @@ const PendingEvent = ({ data, eventId, onCancelEvent, onAcceptEvent, onRejectEve
                   <Button colorScheme="red" mr={3} onClick={handleCancelEvent}>
                     Yes
                   </Button>
-                  <Button variant="ghost" onClick={onClose}>Party goes on</Button>
+                  <Button variant="ghost" onClick={onClose}>
+                    Party goes on
+                  </Button>
                 </ModalFooter>
               </ModalContent>
             </Modal>
           </>
         ) : (
           <>
-            <Button 
-              variant="solid" 
-              marginRight="4" 
+            <Button
+              variant="solid"
+              marginRight="4"
               colorScheme="green"
-              isDisabled={Object.values(data.invitations).find((item) => item.userId === ownKey)?.userStatus === "accepted"} 
-              onClick={onAcceptEvent}>
+              isDisabled={
+                eventFull || Object.values(data.invitations).find(
+                  (item) => item.userId === ownKey
+                )?.userStatus === "accepted"
+              }
+              onClick={onAcceptEvent}
+            >
               <HStack spacing="2">
                 <FontAwesomeIcon icon={faCheck} />
                 <Text>Accept</Text>
               </HStack>
             </Button>
-            <Button 
-              colorScheme="red" 
+            <Button
+              colorScheme="red"
               variant="solid"
-              isDisabled={Object.values(data.invitations).find((item) => item.userId === ownKey)?.userStatus === "rejected"} 
-              onClick={onRejectEvent}>
+              isDisabled={
+                Object.values(data.invitations).find(
+                  (item) => item.userId === ownKey
+                )?.userStatus === "rejected"
+              }
+              onClick={onRejectEvent}
+            >
               <HStack spacing="2">
                 <FontAwesomeIcon icon={faTimes} />
                 <Text>Decline</Text>
