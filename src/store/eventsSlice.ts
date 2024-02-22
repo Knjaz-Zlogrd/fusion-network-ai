@@ -40,6 +40,14 @@ export const eventsSlice = createSlice({
 export const createInvitations = async (eventId: string) => {
   const allUsers = store.getState().usersSlice.allUsers;
   const events = store.getState().eventsSlice.events;
+  const invitations = store.getState().invitationsSlice.invitations;
+
+  for (const invitationId in invitations) {
+    if (invitations[invitationId].eventId === eventId) {
+      console.log(`Invitation already exist for event with ID ${eventId}. Skipping invitation creation.`);
+      return;
+    }
+  }
 
   const event = events[eventId];
   const { category } = event;
