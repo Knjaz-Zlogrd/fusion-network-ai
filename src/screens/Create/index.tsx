@@ -1,9 +1,3 @@
-import React from "react";
-import { useState } from "react";
-import { getTimestamp, generateRandomId } from "../../utils/utils";
-import { useAppSelector } from "../../store";
-import { ref, set } from "@firebase/database";
-import { db } from "../../firebaseConfig";
 import {
   Flex,
   VStack,
@@ -34,8 +28,18 @@ import {
   Text,
   Link,
 } from "@chakra-ui/react";
+import React from "react";
+import { useState } from "react";
+import { getTimestamp, generateRandomId } from "../../utils/utils";
+import { useAppSelector } from "../../store";
+import { ref, set } from "@firebase/database";
+import { db } from "../../firebaseConfig";
 import Logo from "../../assets/Logo";
-import { getKeyFromFirebaseId, getOwnUserInfo } from "../../store/usersSlice";
+import {
+  getKeyFromFirebaseId,
+  getOwnUserInfo,
+  getUsersWithCategory,
+} from "../../store/usersSlice";
 
 const meetingUrl = "https://meet.cymbus.com/j?MID=48054762918";
 const today = new Date().toISOString().split("T")[0];
@@ -51,7 +55,7 @@ const Create = () => {
   const ownKey = useAppSelector((state) =>
     getKeyFromFirebaseId(state.usersSlice, ownUid ?? "")
   );
-  
+
   const currentUser = useAppSelector((state) =>
     getOwnUserInfo(state.usersSlice.allUsers)
   );
@@ -65,11 +69,12 @@ const Create = () => {
     const locationType = data.locationType as string;
     const location =
       locationType === "onsite" ? (data.location as string) : meetingUrl;
-    const eventId = generateRandomId()
+    const eventId = generateRandomId();
+    const userInvitations = getUsersWithCategory(data.category as string);
+    console.log("USERS WITH CAT", userInvitations);
+
     const newEvent = {
-      category: categories?.find(
-        (category) => category.id == data.category
-      ),
+      category: categories?.find((category) => category.id == data.category),
       locationType: locationType,
       location: location,
       description: data.description as string,
@@ -77,7 +82,7 @@ const Create = () => {
       maxParticipants: parseFloat(data["participants-1"] as string),
       participants: [],
       creator: ownKey,
-      // status: "Pending",
+      status: "pending",
       createChannel: channelIsChecked,
       start: getTimestamp(
         formData.get("date") as string,
@@ -89,17 +94,18 @@ const Create = () => {
         parseFloat(data.endH as string),
         parseFloat(data.endM as string)
       ),
+      invitations: userInvitations,
     };
-    const reference = ref(db, "events/" + eventId);
-    set(reference, newEvent);
-    // dispatch(addEvent(newEvent));
+    const eventReference = ref(db, "events/" + eventId);
+    console.log("EVENT", newEvent);
+    set(eventReference, newEvent);
     event.currentTarget.reset();
 
     toast({
       title: "Success!",
       description: "Your event has been created.",
       status: "success",
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
     });
   }
@@ -180,6 +186,7 @@ const Create = () => {
                     setSliderMinMax(val);
                   }}
                   name="participants"
+                  max={10}
                 >
                   <RangeSliderTrack>
                     <RangeSliderFilledTrack />

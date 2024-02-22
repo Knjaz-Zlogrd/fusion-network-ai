@@ -1,11 +1,13 @@
 import { Text, VStack, Heading, Accordion, Box } from "@chakra-ui/react";
 import HistoryItem from "./HistoryItem";
+import {  Event } from "../../store/eventsSlice";
+import { Category } from "../../store/categoriesSlice";
 
-const HISTORY = [
+const HISTORY: Event[] = [
   {
-    status: "Accepted",
-    event: {
-      id: "nCUEgsc2",
+   
+    
+      // id: "nCUEgsc2",
       category: {
         id: "gardening",
         title: "Gardening",
@@ -18,15 +20,16 @@ const HISTORY = [
       maxParticipants: 5,
       creator: "Sinan Sakic",
       participants: ["John Doe", "Alice Johnson", "Michael Smith"],
-
+      status: "held",
       start: 1707989400000,
       end: 1707998100000,
-    },
+      invitations: []
+   
   },
   {
-    status: "Rejected",
-    event: {
-      id: "zz2f1roS",
+   
+    
+      // id: "zz2f1roS",
       category: {
         id: "meditation",
         title: "Meditation",
@@ -48,15 +51,16 @@ const HISTORY = [
         "Emma Watson",
         "James Taylor",
       ],
-
+      status: "held",
+      invitations: [],
       start: 1707087600000,
       end: 1707087600000,
-    },
+   
   },
   {
-    status: "Canceled",
-    event: {
-      id: "2XwwIxjV",
+  
+   
+      // id: "2XwwIxjV",
       category: {
         id: "indoorActivities",
         title: "Indoor Activities",
@@ -74,15 +78,15 @@ const HISTORY = [
         "John Doe",
         "Alice Johnson",
       ],
-
+      status: "held",
       start: 1709246700000,
       end: 1709247540000,
-    },
+      invitations: []
+
   },
   {
-    status: "Accepted",
-    event: {
-      id: "xRIPTBx0",
+
+      // id: "xRIPTBx0",
       category: {
         id: "outdoorActivities",
         title: "Outdoor Activities",
@@ -93,16 +97,18 @@ const HISTORY = [
       minParticipants: 2,
       maxParticipants: 5,
       creator: "Boban Rajovic",
+      status: 'held',
       participants: [
         "Alice Johnson",
         "Michael Smith",
         "John Doe",
         "Emma Watson",
       ],
-
+      
       start: 1709160300000,
       end: 1709161140000,
-    },
+      invitations: []
+
   },
 ];
 
@@ -132,7 +138,7 @@ const History = () => {
       <Box bg="app.accent" w="75%" p="8" borderRadius="lg" boxShadow="md">
         <Accordion allowMultiple>
           {HISTORY.map((item, index) => {
-            return <HistoryItem key={index} data={item.event} status={item.status}/>;
+            return <HistoryItem key={index} data={item}/>;
           })}
         </Accordion>
       </Box>

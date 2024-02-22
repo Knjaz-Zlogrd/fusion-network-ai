@@ -19,7 +19,7 @@ import { parseTimestamp } from "../../utils/utils";
 
 interface Props {
   data: Event;
-  status: string;
+  // status: string;
 }
 
 interface StringKeys {
@@ -32,7 +32,7 @@ const tagColors: StringKeys = {
   Canceled: "gray",
 };
 
-const HistoryItem = ({ data, status }: Props) => {
+const HistoryItem = ({ data }: Props) => {
   const startDate = parseTimestamp(data.start);
   const endDate = parseTimestamp(data.end);
   const participants = [...(data.participants || []), data.creator];
@@ -50,9 +50,9 @@ const HistoryItem = ({ data, status }: Props) => {
                       <Text>|</Text>
                       <Tag
                         variant="solid"
-                        colorScheme={tagColors[status] || "green"}
+                        colorScheme={tagColors[data.status] || "green"}
                       >
-                        {status}
+                        {data.status}
                       </Tag>
                       <Text>|</Text>
                       <Text as="b">Start: </Text>
@@ -95,9 +95,9 @@ const HistoryItem = ({ data, status }: Props) => {
                   <Text as="b">Status: </Text>
                   <Tag
                     variant="solid"
-                    colorScheme={tagColors[status] || "green"}
+                    colorScheme={tagColors[data.status] || "green"}
                   >
-                    {status}
+                    {data.status}
                   </Tag>
                 </HStack>
                 <HStack>

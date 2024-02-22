@@ -7,7 +7,7 @@ type UserResponseStatus = 'pending' | 'accepted' | 'rejected';
 
 type InvitedUsers = {
   userId: string;
-  status: UserResponseStatus;
+  userStatus: UserResponseStatus;
 }
 
 export type Invitation = {

@@ -8,15 +8,27 @@ import { ref, set } from "firebase/database";
 import { db } from "../../firebaseConfig";
 import { generateRandomId } from "../../utils/utils";
 import { useEffect, useState } from "react";
+import { getKeyFromFirebaseId } from "../../store/usersSlice";
+
+interface UserEvent {
+  event: Event;
+  status: string;
+}
 
 const Events = () => {
   const navigate = useNavigate();
   const events = useAppSelector((state) => state.eventsSlice.events);
+  const ownUid = useAppSelector((state) => state.loginSlice.uid);
+  const ownKey = useAppSelector((state) =>
+    getKeyFromFirebaseId(state.usersSlice, ownUid ?? "")
+  );
+  // console.log("OWNKEY", ownKey);
+  console.log(events, "EVENTS");
+  const eventsValues = values(events).filter((event) => {
+    return event.invitations.find((invitation) => invitation.userId === ownKey);
+  });
 
-  const eventsValues = values(events);
-
-  const invitations = useAppSelector((state) => state.invitationsSlice.invitations);
-  console.log(invitations, 'INVITATIONS');
+  // console.log("SHOW EVENTS", showEvents);
 
   return (
     <VStack
@@ -42,16 +54,16 @@ const Events = () => {
       </Heading>
       {!eventsValues.length && (
         <VStack>
-        <Text>You have no upcoming events</Text>
-        <Button
-          bg="app.primary"
-          color="white"
-          _hover={{ bg: "app.secondary" }}
-          onClick={() => navigate("/home/create")}
-        >
-          Create Event
-        </Button>
-      </VStack>
+          <Text>You have no upcoming events</Text>
+          <Button
+            bg="app.primary"
+            color="white"
+            _hover={{ bg: "app.secondary" }}
+            onClick={() => navigate("/home/create")}
+          >
+            Create Event
+          </Button>
+        </VStack>
       )}
 
       {eventsValues.length &&
