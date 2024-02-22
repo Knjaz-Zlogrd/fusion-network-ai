@@ -89,7 +89,7 @@ const PendingEvent = ({
   )?.userStatus;
   const titleStatus = capitalizeFirstLetter(ownEventStatus ?? "");
 
-  const acceptedParticipants = getAcceptedInvitationUsers(eventId).map(
+  const acceptedParticipants = getAcceptedInvitationUsers(data).map(
     (user) => user.name
   );
   console.log("ACCEPTED " + eventId, acceptedParticipants);

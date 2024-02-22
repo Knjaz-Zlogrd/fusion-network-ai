@@ -14,27 +14,27 @@ import {
 } from "@chakra-ui/react";
 import { faMinus, faPlus, faSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Event, EventStatus } from "../../store/eventsSlice";
+import { Event, EventStatus, getAcceptedInvitationUsers } from "../../store/eventsSlice";
 import { parseTimestamp } from "../../utils/utils";
 
 type Props = {
   data: Event;
-}
+};
 
 type StringKeys = {
   [K in EventStatus]: string;
-}
+};
 
 const tagColors: StringKeys = {
   pending: "orange",
   canceled: "red",
-  held: 'green'
+  held: "green",
 };
 
 const HistoryItem = ({ data }: Props) => {
   const startDate = parseTimestamp(data.start);
   const endDate = parseTimestamp(data.end);
-  const participants = [...(data.participants || []), data.creator];
+  const participants = getAcceptedInvitationUsers(data);
   return (
     <AccordionItem bg="gray.300" mb="2px">
       {({ isExpanded }) => (
@@ -121,24 +121,21 @@ const HistoryItem = ({ data }: Props) => {
                 </HStack>
                 <HStack>
                   <Text as="b">
-                    Participants ({(data.participants?.length || 0) + 1}/
+                    Participants ({participants.length}/
                     {data.maxParticipants}):
                   </Text>
+                  <AvatarGroup max={2}>
+                    {participants.map((participant, index) => {
+                      return (
+                        <WrapItem key={index}>
+                          <Avatar name={participant.name} title={participant.name} />
+                        </WrapItem>
+                      );
+                    })}
+                  </AvatarGroup>
                 </HStack>
-                <AvatarGroup max={2}>
-                  {participants.map((participant, index) => {
-                    return (
-                      <WrapItem key={index}>
-                        <Avatar
-                          name={participant}
-                          title={participant}
-                        />
-                      </WrapItem>
-                    );
-                  })}
-                </AvatarGroup>
               </VStack>
-              <Box flex="4">
+              <Box flex="1">
                 <Text fontWeight="bold">Description: </Text>
                 {data.description}
               </Box>

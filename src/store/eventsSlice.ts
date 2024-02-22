@@ -88,11 +88,9 @@ export const updateInvitation = (
   return eventData;
 };
 
-export const getAcceptedInvitationUsers = (eventId: string) => {
-  const events = store.getState().eventsSlice.events;
+export const getAcceptedInvitationUsers = (event: Event) => {
   const users = store.getState().usersSlice.allUsers;
-  const eventData = events[eventId];
-  const invitations = eventData.invitations.filter((invitation) => invitation.userStatus === "accepted");
+  const invitations = event.invitations.filter((invitation) => invitation.userStatus === "accepted");
   return invitations.map((invitation) => {
     return users[invitation.userId];
   });
