@@ -17,7 +17,7 @@ import {
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-// import { timeAgo } from "../../utils/utils";
+import { timeAgo } from "../../utils/utils";
 
 export interface Notification {
   title: string;
