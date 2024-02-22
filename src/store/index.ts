@@ -21,6 +21,7 @@ import {
   REHYDRATE,
 } from "redux-persist";
 import { usersSlice } from "./usersSlice";
+import { invitationsSlice } from "./invitationsSlice";
 
 const authPersistConfig = {
   key: loginSlice.name,
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
   [usersSlice.name]: usersSlice.reducer,
   [categoriesSlice.name]: categoriesSlice.reducer,
   [eventsSlice.name]: eventsSlice.reducer,
+  [invitationsSlice.name]: invitationsSlice.reducer,
 });
 
 const resettableRootReducer = (

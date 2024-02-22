@@ -13,6 +13,9 @@ const Events = () => {
 
   const eventsValues = values(events);
 
+  const invitations = useAppSelector((state) => state.invitationsSlice.invitations);
+  console.log(invitations, 'INVITATIONS');
+
   return (
     <VStack
       w="full"

@@ -11,11 +11,13 @@ import { useAppDispatch } from '../../store';
 import { db } from '../../firebaseConfig';
 import { User, addAllUsers } from '../../store/usersSlice';
 import { Event, addAllEvents, createInvitations } from '../../store/eventsSlice';
+import { Invitation, addInvitations } from '../../store/invitationsSlice';
 
 const Home = () => {
   const dispatch = useAppDispatch();
   const usersRef = ref(db, 'users');
   const eventsRef = ref(db, 'events');
+  const invitationsRef = ref(db, 'invitations');
 
 
   onValue(usersRef, (snapshot) => {
@@ -38,6 +40,16 @@ const Home = () => {
     }
     dispatch(addAllEvents(events));
   });
+
+  onValue(invitationsRef, (snapshot) => {
+    const data = snapshot.val();
+    const invitations: Record<string, Invitation> = {}
+
+    for (const key in data) {
+      invitations[key] = data[key]
+    }
+    dispatch(addInvitations(invitations));
+  })
   
   return (
     <HStack 
