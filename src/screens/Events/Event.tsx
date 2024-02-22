@@ -144,7 +144,7 @@ const PendingEvent = ({ data, onCancelEvent, onAcceptEvent, onRejectEvent }: Pro
                 <Text>Accept</Text>
               </HStack>
             </Button>
-            <Button colorScheme="red" variant="solid">
+            <Button colorScheme="red" variant="solid" onClick={onRejectEvent}>
               <HStack spacing="2">
                 <FontAwesomeIcon icon={faTimes} />
                 <Text>Decline</Text>

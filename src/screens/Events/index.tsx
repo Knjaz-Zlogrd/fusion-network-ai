@@ -89,16 +89,6 @@ const Events = () => {
               )
             );
           })
-        // eventsValues.map((item, index) => {
-        //   return (
-        //     <Event
-        //       key={index}
-        //       data={item}
-        //       // onCancelEvent={console.log("JEBOTE")}
-        //       onAcceptEvent={}
-        //     />
-        //   );
-        // })}
       }
     </VStack>
   );
