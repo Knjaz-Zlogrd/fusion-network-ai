@@ -89,7 +89,9 @@ const PendingEvent = ({
   )?.userStatus;
   const titleStatus = capitalizeFirstLetter(ownEventStatus ?? "");
 
-  const acceptedParticipants = getAcceptedInvitationUsers(eventId).map((user) => user.name);
+  const acceptedParticipants = getAcceptedInvitationUsers(eventId).map(
+    (user) => user.name
+  );
   console.log("ACCEPTED " + eventId, acceptedParticipants);
   const eventFull = acceptedParticipants.length === data.maxParticipants;
 
@@ -115,9 +117,13 @@ const PendingEvent = ({
         borderTopRightRadius="lg"
       >
         <Heading size="md" color="white">
-          {data.category?.title} -{" "}
+          {data.category?.title} (
+          {eventFull
+            ? "Full"
+            : `${acceptedParticipants.length}/${data.maxParticipants}`}
+          ) -{" "}
           <Text display="inline" color={getTitleColor()}>
-            {eventFull ? "Full" : titleStatus}
+            {titleStatus}
           </Text>
         </Heading>
       </CardHeader>
@@ -165,16 +171,22 @@ const PendingEvent = ({
                 {data.minParticipants} - {data.maxParticipants}
               </Text>
             </HStack>
-            <Text fontWeight="bold">Accepted ({acceptedParticipants.length}/{data.maxParticipants}): </Text>
-            <AvatarGroup max={2}>
-                  {acceptedParticipants.map((participant, index) => {
-                    return (
-                      <WrapItem key={index}>
-                        <Avatar size="sm" name={participant} title={participant} />
-                      </WrapItem>
-                    );
-                  })}
-                </AvatarGroup>
+            <HStack>
+              <Text fontWeight="bold">Going: </Text>
+              <AvatarGroup max={2}>
+                {acceptedParticipants.map((participant, index) => {
+                  return (
+                    <WrapItem key={index}>
+                      <Avatar
+                        size="sm"
+                        name={participant}
+                        title={participant}
+                      />
+                    </WrapItem>
+                  );
+                })}
+              </AvatarGroup>
+            </HStack>
           </VStack>
 
           <Box
@@ -232,7 +244,8 @@ const PendingEvent = ({
               marginRight="4"
               colorScheme="green"
               isDisabled={
-                eventFull || Object.values(data.invitations).find(
+                eventFull ||
+                Object.values(data.invitations).find(
                   (item) => item.userId === ownKey
                 )?.userStatus === "accepted"
               }
