@@ -12,6 +12,14 @@ import {
   Flex,
   Box,
   Link,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
 } from "@chakra-ui/react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -34,6 +42,7 @@ interface Props {
 } 
 
 const PendingEvent = ({ data, onCancelEvent, onAcceptEvent, onRejectEvent }: Props) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const startDateTime = parseTimestamp(data.start);
   const endDateTime = parseTimestamp(data.end);
 
@@ -135,7 +144,7 @@ const PendingEvent = ({ data, onCancelEvent, onAcceptEvent, onRejectEvent }: Pro
       <CardFooter bg="app.accent">
         {data.creator === ownKey ? (
           <>
-            <Button
+            {/* <Button
               variant="solid"
               marginRight="4"
               bg="app.primary"
@@ -146,13 +155,31 @@ const PendingEvent = ({ data, onCancelEvent, onAcceptEvent, onRejectEvent }: Pro
                 <FontAwesomeIcon icon={faEdit} />
                 <Text>Edit</Text>
               </HStack>
-            </Button>
-            <Button colorScheme="red" variant="solid">
+            </Button> */}
+            <Button colorScheme="red" variant="solid" onClick={onOpen}>
               <HStack as="span" spacing="2">
                 <FontAwesomeIcon icon={faBan} />
                 <Text>Cancel</Text>
               </HStack>
             </Button>
+            <Modal isOpen={isOpen} onClose={onClose} size="xl" motionPreset="scale">
+              <ModalOverlay />
+              <ModalContent position="absolute" top="25%" left="35%" h="20%">
+                <ModalHeader fontSize="24">Oh Noo</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  <Text fontSize="20">Are you sure you want to cancel this event?</Text>
+                  <Text fontSize="20">People will be sad :(</Text>
+                </ModalBody>
+
+                <ModalFooter>
+                  <Button colorScheme="red" mr={3}>
+                    Yes
+                  </Button>
+                  <Button variant="ghost" onClick={onClose}>Party goes on</Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
           </>
         ) : (
           <>
