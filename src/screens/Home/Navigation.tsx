@@ -22,6 +22,7 @@ import {
   faCalendar,
   faSignOut,
   faClock,
+  faBell,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -118,6 +119,34 @@ const Navigation = () => {
                     fontFamily="heading"
                   >
                     Event History
+                  </Text>
+                </HStack>
+              </Link>
+            </ListItem>
+            <ListItem onClick={handleResetRoutes}>
+              <Link
+                as={RouterLink}
+                to={"notifications"}
+                _hover={{ style: "none" }}
+              >
+                <HStack
+                  h="12"
+                  pl="8"
+                  bg={useRouteMatchValue({ path: "/home/notifications" }, [
+                    "app.accent",
+                    "transparent",
+                  ])}
+                >
+                  <Box h="5" w="5" mb="2px">
+                    <FontAwesomeIcon icon={faBell} color="gray" />
+                  </Box>
+                  <Text
+                    color="white"
+                    fontWeight="semibold"
+                    fontSize="18"
+                    fontFamily="heading"
+                  >
+                    Notifications
                   </Text>
                 </HStack>
               </Link>
