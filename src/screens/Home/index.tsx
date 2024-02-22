@@ -12,6 +12,7 @@ import { db } from '../../firebaseConfig';
 import { User, addAllUsers } from '../../store/usersSlice';
 import { Event, addAllEvents } from '../../store/eventsSlice';
 import { Invitation, addInvitations } from '../../store/invitationsSlice';
+import Notifications from '../Notifications';
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -68,6 +69,7 @@ const Home = () => {
           <Route path="profile" element={<Profile />}/>
           <Route path="create" element={<Create />}/>
           <Route path="events" element={<Pending />}/>
+          <Route path="notifications" element={<Notifications />}/>
           <Route path="history" element={<History />}/>
         </Routes>
       </Flex>

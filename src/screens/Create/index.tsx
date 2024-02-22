@@ -184,6 +184,7 @@ const Create = () => {
                   }}
                   name="participants"
                   max={10}
+                  min={1}
                 >
                   <RangeSliderTrack>
                     <RangeSliderFilledTrack />
