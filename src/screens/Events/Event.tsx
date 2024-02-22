@@ -21,7 +21,7 @@ import {
   faCheck,
   faBan,
 } from "@fortawesome/free-solid-svg-icons";
-import { parseTimestamp } from "../../utils/utils";
+import { capitalizeFirstLetter, parseTimestamp } from "../../utils/utils";
 import { Event } from "../../store/eventsSlice";
 import { useAppSelector } from "../../store";
 import { getKeyFromFirebaseId } from "../../store/usersSlice";
@@ -46,6 +46,24 @@ const PendingEvent = ({ data, onCancelEvent, onAcceptEvent, onRejectEvent }: Pro
     (state) => state.usersSlice.allUsers[data.creator]
   );
 
+
+  const ownEventStatus = Object.values(data.invitations).find((item) => item.userId === ownKey)?.userStatus;
+  const titleStatus = capitalizeFirstLetter(ownEventStatus ?? "");
+
+  let titleColor: string
+  const getTitleColor = () => {
+    switch (ownEventStatus) {
+      case 'accepted':
+        return titleColor = 'green.500'
+      case 'pending':
+        return titleColor = 'orange'
+      case 'rejected':
+        return titleColor = 'red'
+      default:
+        return 'white'
+    }
+  }
+
   return (
     <Card _hover={{ boxShadow: "outline" }} boxShadow="md">
       <CardHeader
@@ -54,7 +72,7 @@ const PendingEvent = ({ data, onCancelEvent, onAcceptEvent, onRejectEvent }: Pro
         borderTopRightRadius="lg"
       >
         <Heading size="md" color="white">
-          {data.category?.title}
+          {data.category?.title} - <Text display="inline" color={getTitleColor()}>{titleStatus}</Text>
         </Heading>
       </CardHeader>
       <Divider />
@@ -138,13 +156,22 @@ const PendingEvent = ({ data, onCancelEvent, onAcceptEvent, onRejectEvent }: Pro
           </>
         ) : (
           <>
-            <Button variant="solid" marginRight="4" colorScheme="green" onClick={onAcceptEvent}>
+            <Button 
+              variant="solid" 
+              marginRight="4" 
+              colorScheme="green"
+              isDisabled={Object.values(data.invitations).find((item) => item.userId === ownKey)?.userStatus === "accepted"} 
+              onClick={onAcceptEvent}>
               <HStack spacing="2">
                 <FontAwesomeIcon icon={faCheck} />
                 <Text>Accept</Text>
               </HStack>
             </Button>
-            <Button colorScheme="red" variant="solid" onClick={onRejectEvent}>
+            <Button 
+              colorScheme="red" 
+              variant="solid"
+              isDisabled={Object.values(data.invitations).find((item) => item.userId === ownKey)?.userStatus === "rejected"} 
+              onClick={onRejectEvent}>
               <HStack spacing="2">
                 <FontAwesomeIcon icon={faTimes} />
                 <Text>Decline</Text>
