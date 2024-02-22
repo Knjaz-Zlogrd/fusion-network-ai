@@ -14,22 +14,21 @@ import {
 } from "@chakra-ui/react";
 import { faMinus, faPlus, faSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Event } from "../../store/eventsSlice";
+import { Event, EventStatus } from "../../store/eventsSlice";
 import { parseTimestamp } from "../../utils/utils";
 
-interface Props {
+type Props = {
   data: Event;
-  // status: string;
 }
 
-interface StringKeys {
-  [key: string]: any;
+type StringKeys = {
+  [K in EventStatus]: string;
 }
 
 const tagColors: StringKeys = {
-  Accepted: "green",
-  Rejected: "red",
-  Canceled: "gray",
+  pending: "orange",
+  canceled: "red",
+  held: 'green'
 };
 
 const HistoryItem = ({ data }: Props) => {

@@ -78,7 +78,7 @@ const Events = () => {
             return (
               event.invitations.some(
                 (invitation) => invitation.userId === ownKey
-              ) && event.status !== 'canceled' && (
+              ) && event.status !== 'canceled' && event.end > Date.now() && (
                 <Event
                   key={eventKey}
                   eventId={eventKey}
