@@ -182,18 +182,6 @@ const PendingEvent = ({
       <CardFooter bg="app.accent">
         {data.creator === ownKey ? (
           <>
-            {/* <Button
-              variant="solid"
-              marginRight="4"
-              bg="app.primary"
-              color="white"
-              _hover={{ bg: "app.secondary" }}
-            >
-              <HStack spacing="2">
-                <FontAwesomeIcon icon={faEdit} />
-                <Text>Edit</Text>
-              </HStack>
-            </Button> */}
             <Button colorScheme="red" variant="solid" onClick={onOpen}>
               <HStack as="span" spacing="2">
                 <FontAwesomeIcon icon={faBan} />
