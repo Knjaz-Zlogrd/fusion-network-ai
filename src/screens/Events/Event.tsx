@@ -20,6 +20,7 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
+  useToast,
 } from "@chakra-ui/react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -46,6 +47,7 @@ interface Props {
 
 const PendingEvent = ({ data, eventId, onCancelEvent, onAcceptEvent, onRejectEvent }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
   const startDateTime = parseTimestamp(data.start);
   const endDateTime = parseTimestamp(data.end);
 
@@ -64,6 +66,13 @@ const PendingEvent = ({ data, eventId, onCancelEvent, onAcceptEvent, onRejectEve
       ...data,
       status: 'canceled'
     })
+    toast({
+      title: ":(",
+      description: "Event was canceled!.",
+      status: "warning",
+      duration: 3000,
+      isClosable: true,
+    });
   }
 
   const ownEventStatus = Object.values(data.invitations).find((item) => item.userId === ownKey)?.userStatus;

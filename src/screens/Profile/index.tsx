@@ -42,7 +42,7 @@ const Profile = () => {
       title: "Success!",
       description: "User profile updated.",
       status: "success",
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
     });
   }
