@@ -78,9 +78,10 @@ const Events = () => {
             return (
               event.invitations.some(
                 (invitation) => invitation.userId === ownKey
-              ) && (
+              ) && event.status !== 'canceled' && (
                 <Event
                   key={eventKey}
+                  eventId={eventKey}
                   data={event}
                   onAcceptEvent={() => invitationHandler(eventKey, "accepted")}
                   onRejectEvent={() => invitationHandler(eventKey, "rejected")}

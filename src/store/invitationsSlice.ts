@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { sortBy, values } from "lodash";
 
-type InvitationStatus = 'pending' | 'canceled';
+type InvitationStatus = 'pending' | 'canceled' | 'held';
 
 type UserResponseStatus = 'pending' | 'accepted' | 'rejected';
 

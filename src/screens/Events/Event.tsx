@@ -33,15 +33,18 @@ import { capitalizeFirstLetter, parseTimestamp } from "../../utils/utils";
 import { Event } from "../../store/eventsSlice";
 import { useAppSelector } from "../../store";
 import { getKeyFromFirebaseId } from "../../store/usersSlice";
+import { ref, set } from "firebase/database";
+import { db } from "../../firebaseConfig";
 
 interface Props {
   data: Event;
+  eventId: string;
   onCancelEvent?: any;
   onAcceptEvent: any;
   onRejectEvent?: any;
 } 
 
-const PendingEvent = ({ data, onCancelEvent, onAcceptEvent, onRejectEvent }: Props) => {
+const PendingEvent = ({ data, eventId, onCancelEvent, onAcceptEvent, onRejectEvent }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const startDateTime = parseTimestamp(data.start);
   const endDateTime = parseTimestamp(data.end);
@@ -55,6 +58,13 @@ const PendingEvent = ({ data, onCancelEvent, onAcceptEvent, onRejectEvent }: Pro
     (state) => state.usersSlice.allUsers[data.creator]
   );
 
+  const handleCancelEvent = () => {
+    const reference = ref(db, 'events/' + eventId)
+    set(reference, {
+      ...data,
+      status: 'canceled'
+    })
+  }
 
   const ownEventStatus = Object.values(data.invitations).find((item) => item.userId === ownKey)?.userStatus;
   const titleStatus = capitalizeFirstLetter(ownEventStatus ?? "");
@@ -173,7 +183,7 @@ const PendingEvent = ({ data, onCancelEvent, onAcceptEvent, onRejectEvent }: Pro
                 </ModalBody>
 
                 <ModalFooter>
-                  <Button colorScheme="red" mr={3}>
+                  <Button colorScheme="red" mr={3} onClick={handleCancelEvent}>
                     Yes
                   </Button>
                   <Button variant="ghost" onClick={onClose}>Party goes on</Button>
