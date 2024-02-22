@@ -35,26 +35,27 @@ import {
   Link,
 } from "@chakra-ui/react";
 import Logo from "../../assets/Logo";
-import { getKeyFromFirebaseId } from "../../store/usersSlice";
+import { getKeyFromFirebaseId, getOwnUserInfo } from "../../store/usersSlice";
 
 const meetingUrl = "https://meet.cymbus.com/j?MID=48054762918";
 const today = new Date().toISOString().split("T")[0];
 
 const Create = () => {
+  const toast = useToast();
   const [sliderMinMax, setSliderMinMax] = useState([0, 0]);
 
   const [eventType, setEventType] = React.useState("onsite");
   const [channelIsChecked, setChannelIsChecked] = useState(false);
-  const selectedCategories = useAppSelector(
-    (state) => state.categoriesSlice.categories
-  );
 
   const ownUid = useAppSelector((state) => state.loginSlice.uid);
   const ownKey = useAppSelector((state) =>
     getKeyFromFirebaseId(state.usersSlice, ownUid ?? "")
   );
   
-  const toast = useToast();
+  const currentUser = useAppSelector((state) =>
+    getOwnUserInfo(state.usersSlice.allUsers)
+  );
+  const categories = currentUser?.categories;
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -66,7 +67,7 @@ const Create = () => {
       locationType === "onsite" ? (data.location as string) : meetingUrl;
     const eventId = generateRandomId()
     const newEvent = {
-      category: selectedCategories.find(
+      category: categories?.find(
         (category) => category.id == data.category
       ),
       locationType: locationType,
@@ -138,7 +139,7 @@ const Create = () => {
             <FormControl isRequired>
               <FormLabel>Category</FormLabel>
               <Select placeholder="Select option" name="category" bg="gray.100">
-                {selectedCategories.map((category, index) => {
+                {categories?.map((category, index) => {
                   return (
                     <option key={index} value={category.id}>
                       {category.title}
