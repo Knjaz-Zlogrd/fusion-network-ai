@@ -28,7 +28,7 @@ const Login = () => {
       
       if (token) {   
         dispatch(addAuthToken(token));
-        navigate('/home/create');
+        navigate('/home/events');
         setLoginFailed(false);
       } else {
         setLoginFailed(true);

@@ -9,7 +9,7 @@ const PageNotFound = () => {
 
   const handleBackToHomeButton = () => {
     if (authToken) {
-      navigate('/home/create');
+      navigate('/home/events');
     } else {
       navigate('/login');
     }

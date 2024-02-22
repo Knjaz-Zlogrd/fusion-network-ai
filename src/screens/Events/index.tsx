@@ -1,6 +1,7 @@
-import { Heading, VStack, Text } from "@chakra-ui/react";
+import { Heading, VStack, Text, Button } from "@chakra-ui/react";
 import { useAppSelector } from "../../store";
 import { values } from "lodash";
+import { Navigate, useNavigate } from "react-router-dom";
 // import { removeEvent } from "../../store/eventsSlice";
 import Event from "./Event";
 import { ref, set } from "firebase/database";
@@ -9,6 +10,7 @@ import { generateRandomId } from "../../utils/utils";
 import { useEffect, useState } from "react";
 
 const Events = () => {
+  const navigate = useNavigate();
   const events = useAppSelector((state) => state.eventsSlice.events);
 
   const eventsValues = values(events);
@@ -39,7 +41,17 @@ const Events = () => {
         Upcoming Events
       </Heading>
       {!eventsValues.length && (
-        <Text>You have no upcoming events would you like to</Text>
+        <VStack>
+        <Text>You have no upcoming events</Text>
+        <Button
+          bg="app.primary"
+          color="white"
+          _hover={{ bg: "app.secondary" }}
+          onClick={() => navigate("/home/create")}
+        >
+          Create Event
+        </Button>
+      </VStack>
       )}
 
       {eventsValues.length &&

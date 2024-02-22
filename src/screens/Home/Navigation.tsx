@@ -10,11 +10,6 @@ import {
   Link,
   HStack,
   Text,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Icon,
   Box,
 } from "@chakra-ui/react";
 import useRouteMatchValue from "../../hooks/useRouteMatchValue";
@@ -25,9 +20,8 @@ import {
   faUser,
   faPlus,
   faCalendar,
-  faThList,
   faSignOut,
-  faClock
+  faClock,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -56,55 +50,7 @@ const Navigation = () => {
           </Center>
           <List w="full">
             <ListItem onClick={handleResetRoutes}>
-              <Link as={RouterLink} to={"profile"} _hover={{style: 'none'}}>
-                <HStack
-                  h="12"
-                  pl="8"
-                  bg={useRouteMatchValue({ path: "/home/profile" }, [
-                    "app.accent",
-                    "transparent",
-                  ])}
-                >
-                  <Box h="5" w="5" mb="2px">
-                    <FontAwesomeIcon icon={faUser} color="gray" />
-                  </Box>
-                  <Text
-                    color="white"
-                    fontWeight="semibold"
-                    fontSize="18"
-                    fontFamily="heading"
-                  >
-                    Profile
-                  </Text>
-                </HStack>
-              </Link>
-            </ListItem>
-            <ListItem onClick={handleResetRoutes}>
-              <Link as={RouterLink} to={"create"} _hover={{style: 'none'}}>
-                <HStack
-                  h="12"
-                  pl="8"
-                  bg={useRouteMatchValue({ path: "/home/create" }, [
-                    "app.accent",
-                    "transparent",
-                  ])}
-                >
-                  <Box h="5" w="5" mb="2px">
-                    <FontAwesomeIcon icon={faPlus} color="gray" />
-                  </Box>
-                  <Text
-                    color="white"
-                    fontWeight="semibold"
-                    fontSize="18"
-                    fontFamily="heading"
-                  >
-                    Create Event
-                  </Text>
-                </HStack>
-              </Link>
-            </ListItem>
-            <ListItem onClick={handleResetRoutes}>
-              <Link as={RouterLink} to={"events"} _hover={{style: 'none'}}>
+              <Link as={RouterLink} to={"events"} _hover={{ style: "none" }}>
                 <HStack
                   h="12"
                   pl="8"
@@ -128,7 +74,32 @@ const Navigation = () => {
               </Link>
             </ListItem>
             <ListItem onClick={handleResetRoutes}>
-              <Link as={RouterLink} to={"history"} _hover={{style: 'none'}}>
+              <Link as={RouterLink} to={"create"} _hover={{ style: "none" }}>
+                <HStack
+                  h="12"
+                  pl="8"
+                  bg={useRouteMatchValue({ path: "/home/create" }, [
+                    "app.accent",
+                    "transparent",
+                  ])}
+                >
+                  <Box h="5" w="5" mb="2px">
+                    <FontAwesomeIcon icon={faPlus} color="gray" />
+                  </Box>
+                  <Text
+                    color="white"
+                    fontWeight="semibold"
+                    fontSize="18"
+                    fontFamily="heading"
+                  >
+                    Create Event
+                  </Text>
+                </HStack>
+              </Link>
+            </ListItem>
+
+            <ListItem onClick={handleResetRoutes}>
+              <Link as={RouterLink} to={"history"} _hover={{ style: "none" }}>
                 <HStack
                   h="12"
                   pl="8"
@@ -147,6 +118,30 @@ const Navigation = () => {
                     fontFamily="heading"
                   >
                     Event History
+                  </Text>
+                </HStack>
+              </Link>
+            </ListItem>
+            <ListItem onClick={handleResetRoutes}>
+              <Link as={RouterLink} to={"profile"} _hover={{ style: "none" }}>
+                <HStack
+                  h="12"
+                  pl="8"
+                  bg={useRouteMatchValue({ path: "/home/profile" }, [
+                    "app.accent",
+                    "transparent",
+                  ])}
+                >
+                  <Box h="5" w="5" mb="2px">
+                    <FontAwesomeIcon icon={faUser} color="gray" />
+                  </Box>
+                  <Text
+                    color="white"
+                    fontWeight="semibold"
+                    fontSize="18"
+                    fontFamily="heading"
+                  >
+                    Profile
                   </Text>
                 </HStack>
               </Link>

@@ -2,7 +2,6 @@ import {
   Text,
   AccordionItem,
   Box,
-  AccordionIcon,
   AccordionButton,
   AccordionPanel,
   HStack,
@@ -127,12 +126,11 @@ const HistoryItem = ({ data, status }: Props) => {
                     {data.maxParticipants}):
                   </Text>
                 </HStack>
-                <AvatarGroup size="md" max={2}>
-                  {participants.map((participant) => {
+                <AvatarGroup max={2}>
+                  {participants.map((participant, index) => {
                     return (
-                      <WrapItem>
+                      <WrapItem key={index}>
                         <Avatar
-                          size="md"
                           name={participant}
                           title={participant}
                         />

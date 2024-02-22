@@ -15,9 +15,16 @@ import {
 } from "@chakra-ui/react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEdit,
+  faTimes,
+  faCheck,
+  faBan,
+} from "@fortawesome/free-solid-svg-icons";
 import { parseTimestamp } from "../../utils/utils";
 import { Event } from "../../store/eventsSlice";
+import { useAppSelector } from "../../store";
+import { getKeyFromFirebaseId } from "../../store/usersSlice";
 
 interface Props {
   data: Event;
@@ -27,6 +34,16 @@ interface Props {
 const PendingEvent = ({ data }: Props) => {
   const startDateTime = parseTimestamp(data.start);
   const endDateTime = parseTimestamp(data.end);
+
+  const ownUid = useAppSelector((state) => state.loginSlice.uid);
+  const ownKey = useAppSelector((state) =>
+    getKeyFromFirebaseId(state.usersSlice, ownUid ?? "")
+  );
+
+  const creator = useAppSelector(
+    (state) => state.usersSlice.allUsers[data.creator]
+  );
+  console.log("CREATOR", creator);
 
   return (
     <Card _hover={{ boxShadow: "outline" }} boxShadow="md">
@@ -56,6 +73,14 @@ const PendingEvent = ({ data }: Props) => {
                   AUCA Meeting
                 </Link>
               )}
+            </HStack>
+            <HStack>
+              <Text fontWeight="bold">Created by: </Text>
+              <Text>
+                {data.creator === ownKey
+                  ? "You"
+                  : creator?.name || "Boban Rajovic"}
+              </Text>
             </HStack>
             <HStack>
               <Text fontWeight="bold">Participants: </Text>
@@ -89,24 +114,43 @@ const PendingEvent = ({ data }: Props) => {
         </Flex>
       </CardBody>
       <CardFooter bg="app.accent">
-        <Button
-          variant="solid"
-          marginRight="4"
-          bg="app.primary"
-          color="white"
-          _hover={{ bg: "app.secondary" }}
-        >
-          <HStack spacing="2">
-            <FontAwesomeIcon icon={faEdit} />
-            <Text>Edit</Text>
-          </HStack>
-        </Button>
-        <Button colorScheme="red" variant="solid" >
-          <HStack spacing="2">
-            <FontAwesomeIcon icon={faTimes} />
-            <Text>Cancel</Text>
-          </HStack>
-        </Button>
+        {data.creator === ownKey ? (
+          <>
+            <Button
+              variant="solid"
+              marginRight="4"
+              bg="app.primary"
+              color="white"
+              _hover={{ bg: "app.secondary" }}
+            >
+              <HStack spacing="2">
+                <FontAwesomeIcon icon={faEdit} />
+                <Text>Edit</Text>
+              </HStack>
+            </Button>
+            <Button colorScheme="red" variant="solid">
+              <HStack as="span" spacing="2">
+                <FontAwesomeIcon icon={faBan} />
+                <Text>Cancel</Text>
+              </HStack>
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button variant="solid" marginRight="4" colorScheme="green">
+              <HStack spacing="2">
+                <FontAwesomeIcon icon={faCheck} />
+                <Text>Accept</Text>
+              </HStack>
+            </Button>
+            <Button colorScheme="red" variant="solid">
+              <HStack spacing="2">
+                <FontAwesomeIcon icon={faTimes} />
+                <Text>Decline</Text>
+              </HStack>
+            </Button>
+          </>
+        )}
       </CardFooter>
     </Card>
   );
