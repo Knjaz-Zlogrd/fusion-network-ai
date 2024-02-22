@@ -10,7 +10,7 @@ import { onValue, ref } from '@firebase/database';
 import { useAppDispatch } from '../../store';
 import { db } from '../../firebaseConfig';
 import { User, addAllUsers } from '../../store/usersSlice';
-import { Event, addAllEvents } from '../../store/eventsSlice';
+import { Event, addAllEvents, createInvitations } from '../../store/eventsSlice';
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -34,6 +34,7 @@ const Home = () => {
 
     for (const key in data) {
       events[key] = data[key]
+      createInvitations(key);
     }
     dispatch(addAllEvents(events));
   });

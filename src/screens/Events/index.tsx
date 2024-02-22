@@ -3,10 +3,14 @@ import { useAppSelector } from "../../store";
 import { values } from "lodash";
 // import { removeEvent } from "../../store/eventsSlice";
 import Event from "./Event";
+import { ref, set } from "firebase/database";
+import { db } from "../../firebaseConfig";
+import { generateRandomId } from "../../utils/utils";
+import { useEffect, useState } from "react";
 
 const Events = () => {
   const events = useAppSelector((state) => state.eventsSlice.events);
-  console.log("EVENTS", values(events));
+
   const eventsValues = values(events);
 
   return (
