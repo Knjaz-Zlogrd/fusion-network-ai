@@ -78,7 +78,7 @@ const PendingEvent = ({
     toast({
       title: ":(",
       description: "Event was canceled.",
-      status: "info",
+      status: "warning",
       duration: 3000,
       isClosable: true,
     });
