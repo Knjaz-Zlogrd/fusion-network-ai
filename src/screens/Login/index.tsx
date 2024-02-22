@@ -39,6 +39,12 @@ const Login = () => {
     }
   }
 
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleLogin();
+    }
+  };
+
   return (
     <Stack 
       h="100vh" 
@@ -73,6 +79,7 @@ const Login = () => {
             _placeholder={{color: 'black'}} 
             bgColor="gray.200"
             value={loginPassword}
+            onKeyDown={(event) => handleKeyPress(event)}
             onChange={(event) => setLoginPassword(event.target.value)}
           />
           <Text 

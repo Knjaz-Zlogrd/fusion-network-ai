@@ -82,7 +82,6 @@ const Events = () => {
                 <Event
                   key={eventKey}
                   data={event}
-                  // onCancelEvent={console.log("JEBOTE")}
                   onAcceptEvent={() => invitationHandler(eventKey, "accepted")}
                   onRejectEvent={() => invitationHandler(eventKey, "rejected")}
                 />
