@@ -5,13 +5,13 @@ const NOTIFICATIONS = [
   {
     title: "Reading",
     message: "This event has been cancelled",
-    time: 1709160300000,
+    time: 1705523802000,
   },
   {
     title: "Sports",
     message:
       "The participants for this event have been gathered and it will be held on 2024/05/06 20:30",
-    time: 1709160300000,
+    time: 1677098202000,
   },
 ];
 

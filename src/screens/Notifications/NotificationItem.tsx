@@ -5,16 +5,11 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardFooter,
-  Button,
-  Divider,
-  VStack,
-  Flex,
   Box,
-  Link,
+  Spacer,
 } from "@chakra-ui/react";
 
-import { faBell } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { timeAgo } from "../../utils/utils";
@@ -30,41 +25,26 @@ interface Props {
 }
 
 const NotificationItem = ({ notification }: Props) => {
+  const timeAgoString: string = timeAgo(notification.time);
   return (
-    <Card>
-      <CardBody bg="app.accent">
-        <CardHeader>
-          <HStack>
-            <FontAwesomeIcon icon={faBell} />
-            <Heading size="md" ml="8px">Client Report</Heading>
-          </HStack>
-        </CardHeader>
-        <VStack spacing="4">
-          <Box>
-            <Heading size="xs" textTransform="uppercase">
-              Summary
-            </Heading>
-            <Text pt="2" fontSize="sm">
-              View a summary of all your clients over the last month.
-            </Text>
+    <Card w="400px">
+      <CardHeader bg="app.primary" borderTopRadius="lg">
+        <HStack color="gray.300">
+          <FontAwesomeIcon size="xl" icon={faBell} />
+          <Heading size="md" ml="8px">
+            {notification.title}
+          </Heading>
+          <Text> - {timeAgoString}</Text>
+          <Spacer />
+          <Box _hover={{cursor: "pointer"}}>
+            <FontAwesomeIcon icon={faTimes} color="gray" />
           </Box>
-          <Box>
-            <Heading size="xs" textTransform="uppercase">
-              Overview
-            </Heading>
-            <Text pt="2" fontSize="sm">
-              Check out the overview of your clients.
-            </Text>
-          </Box>
-          <Box>
-            <Heading size="xs" textTransform="uppercase">
-              Analysis
-            </Heading>
-            <Text pt="2" fontSize="sm">
-              See a detailed analysis of all your business clients.
-            </Text>
-          </Box>
-        </VStack>
+        </HStack>
+      </CardHeader>
+      <CardBody bg="app.accent" borderBottomRadius="lg">
+        <Text fontSize="sm">
+          {notification.message}
+        </Text>
       </CardBody>
     </Card>
   );
