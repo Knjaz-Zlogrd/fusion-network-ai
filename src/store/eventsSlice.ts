@@ -48,6 +48,40 @@ export const eventsSlice = createSlice({
   },
 });
 
+export const updateEventInvitations = (
+  userId: string,
+  categoryIds: string[]
+) => {
+  const events = store.getState().eventsSlice.events;
+  Object.entries(events).forEach(([eventId, event]) => {
+    const invitations = event.invitations;
+    const userInvited = invitations.some((invitation) => invitation.userId === userId);
+    if (
+      event.category &&
+      categoryIds.find((categoryId) => categoryId === event.category?.id) &&
+      !userInvited
+    ) {
+      console.log("EVENT", event);
+      console.log("MATCHING CATEGORY FOR MISSING EVENT", event.category);
+      const updatedEvent = addInvitation(event, userId, "pending");
+      console.log("UPDATED EVENT", updatedEvent);
+      const reference = ref(db, 'events/' + eventId);
+      set(reference, updatedEvent);
+    }
+  });
+};
+
+
+export const addInvitation = (eventData: Event, userId: string, userStatus: UserResponseStatus): Event => {
+  return {
+      ...eventData,
+      invitations: [
+          ...eventData.invitations,
+          { userId, userStatus }
+      ]
+  };
+}
+
 export const updateInvitation = (
   eventId: string,
   userId: string,
@@ -90,7 +124,9 @@ export const updateInvitation = (
 
 export const getAcceptedInvitationUsers = (event: Event) => {
   const users = store.getState().usersSlice.allUsers;
-  const invitations = event.invitations.filter((invitation) => invitation.userStatus === "accepted");
+  const invitations = event.invitations.filter(
+    (invitation) => invitation.userStatus === "accepted"
+  );
   return invitations.map((invitation) => {
     return users[invitation.userId];
   });

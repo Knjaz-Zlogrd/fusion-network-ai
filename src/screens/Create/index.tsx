@@ -56,9 +56,7 @@ const Create = () => {
     getKeyFromFirebaseId(state.usersSlice, ownUid ?? "")
   );
 
-  const currentUser = useAppSelector((state) =>
-    getOwnUserInfo(state.usersSlice.allUsers)
-  );
+  const currentUser = useAppSelector((state) => getOwnUserInfo());
   const categories = currentUser?.categories;
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -67,9 +65,13 @@ const Create = () => {
     const formData = new FormData(event.currentTarget);
     const data = Object.fromEntries(formData.entries());
     const locationType = data.locationType as string;
-    const location = locationType === "onsite" ? (data.location as string) : meetingUrl;
+    const location =
+      locationType === "onsite" ? (data.location as string) : meetingUrl;
     const eventId = generateRandomId();
-    const userInvitations = createInvitations(data.category as string, ownKey as string);
+    const userInvitations = createInvitations(
+      data.category as string,
+      ownKey as string
+    );
 
     const newEvent = {
       category: categories?.find((category) => category.id == data.category),

@@ -22,7 +22,7 @@ const Profile = () => {
   const descRef = useRef() as MutableRefObject<HTMLTextAreaElement>;
   const toast = useToast();
   const currentUser = useAppSelector((state) =>
-    getOwnUserInfo(state.usersSlice.allUsers)
+    getOwnUserInfo()
   );
 
   const ownUid = useAppSelector((state) => state.loginSlice.uid);

@@ -8,8 +8,12 @@ import { ref, set } from "firebase/database";
 import { db } from "../../firebaseConfig";
 import { generateRandomId } from "../../utils/utils";
 import { useEffect, useState } from "react";
-import { getKeyFromFirebaseId } from "../../store/usersSlice";
-import { UserResponseStatus, updateInvitation } from "../../store/eventsSlice";
+import { getKeyFromFirebaseId, getOwnUserInfo } from "../../store/usersSlice";
+import {
+  UserResponseStatus,
+  updateEventInvitations,
+  updateInvitation,
+} from "../../store/eventsSlice";
 
 interface UserEvent {
   event: Event;
@@ -20,8 +24,18 @@ const Events = () => {
   const navigate = useNavigate();
   const events = useAppSelector((state) => state.eventsSlice.events);
   const ownUid = useAppSelector((state) => state.loginSlice.uid);
+  const userInfo = getOwnUserInfo();
+
   const ownKey = useAppSelector((state) =>
     getKeyFromFirebaseId(state.usersSlice, ownUid ?? "")
+  );
+  console.log("USER INFO", ownKey);
+
+  const userCategories = userInfo?.categories || [];
+
+  updateEventInvitations(
+    ownKey ?? "",
+    userCategories.map((category) => category.id)
   );
 
   const eventsValues = values(events).filter((event) => {
@@ -72,24 +86,24 @@ const Events = () => {
         </VStack>
       )}
 
-      {
-        eventsValues.length &&
-          Object.entries(events).map(([eventKey, event]) => {
-            return (
-              event.invitations.some(
-                (invitation) => invitation.userId === ownKey
-              ) && event.status !== 'canceled' && event.end > Date.now() && (
-                <Event
-                  key={eventKey}
-                  eventId={eventKey}
-                  data={event}
-                  onAcceptEvent={() => invitationHandler(eventKey, "accepted")}
-                  onRejectEvent={() => invitationHandler(eventKey, "rejected")}
-                />
-              )
-            );
-          })
-      }
+      {eventsValues.length &&
+        Object.entries(events).map(([eventKey, event]) => {
+          return (
+            event.invitations.some(
+              (invitation) => invitation.userId === ownKey
+            ) &&
+            event.status !== "canceled" &&
+            event.end > Date.now() && (
+              <Event
+                key={eventKey}
+                eventId={eventKey}
+                data={event}
+                onAcceptEvent={() => invitationHandler(eventKey, "accepted")}
+                onRejectEvent={() => invitationHandler(eventKey, "rejected")}
+              />
+            )
+          );
+        })}
     </VStack>
   );
 };

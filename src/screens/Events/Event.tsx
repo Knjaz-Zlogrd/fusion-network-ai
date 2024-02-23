@@ -132,10 +132,6 @@ const PendingEvent = ({
         <Flex w="600px">
           <VStack flex="2" align="flex-start">
             <HStack>
-              <Text fontWeight="bold">Category: </Text>
-              <Text>{data.category?.title}</Text>
-            </HStack>
-            <HStack>
               <Text fontWeight="bold">Location: </Text>
               {data.locationType === "onsite" ? (
                 <Text>{data.location}</Text>

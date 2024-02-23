@@ -10,10 +10,19 @@ import { ref, set } from "@firebase/database";
 
 const INIT_CATEGORIES = [
   { id: "sports", title: "Sports" },
-  { id: "outdoorActivities", title: "Outdoor Activities" },
-  { id: "indoorActivities", title: "Indoor Activities" },
+  { id: "worldDomination", title: "World Domination" },
+  { id: "sprintPlanning", title: "Sprint Planning :(" },
+  { id: "nerdConvention", title: "Nerd Conventions" },
+  { id: "doomsdayDeviceBuilding", title: "Doomsday Device Building" },
+  { id: "takingTheHobbitsToIsengard", title: "Taking the hobbits to Isengard" },
+  { id: "timeTraveling", title: "Time Traveling" },
+  { id: "sillyWalking", title: "Silly Walking" },
+  { id: "mainFramHacking", title: "Mainframe Hacking" },
+  { id: "bigRocks", title: "Big Rocks Handling" },
   { id: "artsAndCrafts", title: "Arts and Crafts" },
   { id: "music", title: "Music" },
+  { id: "outdoorActivities", title: "Outdoor Activities" },
+  { id: "indoorActivities", title: "Indoor Activities" },
   { id: "dance", title: "Dance" },
   { id: "cooking", title: "Cooking" },
   { id: "reading", title: "Reading" },
@@ -96,17 +105,33 @@ const Categories = ({ currentUser, ownKey }: CategoriesProps) => {
             borderColor="gray.150"
             p="4"
             h="750px"
-            w="200px"
+            w="250px"
             bg="app.accent"
             boxShadow="md"
+            sx={{
+              overflowY: "auto",
+              "&::-webkit-scrollbar": {
+                width: "8px",
+              },
+              scrollbarWidth: "none",
+              "&::-webkit-scrollbar-thumb": {
+                borderRadius: "24px",
+              },
+              _hover: {
+                "&::-webkit-scrollbar-thumb": {
+                  background: "grey",
+                },
+              },
+            }}
           >
-            <Heading as="h4" size="sm" marginBottom="4">
-              Available Categories
-            </Heading>
             <VStack>
+              <Heading as="h4" size="sm" marginBottom="4">
+                Available Categories
+              </Heading>
               {availableCategories.map((value, index) => {
                 return (
                   <Tag
+                  textAlign="center"
                     _hover={{ cursor: "pointer", bg: "app.secondary" }}
                     size="lg"
                     key={index}
@@ -129,9 +154,24 @@ const Categories = ({ currentUser, ownKey }: CategoriesProps) => {
             borderColor="gray.150"
             p="4"
             h="750px"
-            w="200px"
+            w="250px"
             bg="app.accent"
             boxShadow="md"
+            sx={{
+              overflowY: "auto",
+              "&::-webkit-scrollbar": {
+                width: "8px",
+              },
+              scrollbarWidth: "none",
+              "&::-webkit-scrollbar-thumb": {
+                borderRadius: "24px",
+              },
+              _hover: {
+                "&::-webkit-scrollbar-thumb": {
+                  background: "grey",
+                },
+              },
+            }}
           >
             <VStack>
               <Heading as="h4" size="sm" marginBottom="4">

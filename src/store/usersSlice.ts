@@ -39,8 +39,8 @@ export const usersSlice = createSlice({
   },
 });
 
-export const getOwnUserInfo = (users: Record<string, User>) => {
-  const allUsers = values(users);
+export const getOwnUserInfo = () => {
+  const allUsers = values(store.getState().usersSlice.allUsers);
   const uid = store.getState().loginSlice.uid;
   const currentUser = allUsers.find((user) => user.firebaseId === uid);
   return currentUser;
